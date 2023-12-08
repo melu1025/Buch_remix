@@ -13,10 +13,10 @@ export default function Navbar() {
                 <BreadcrumbLink href="/">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbItem> 
-                <BreadcrumbLink href="/search">Search</BreadcrumbLink>
+                <BreadcrumbLink href="/search">Suche</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbItem> 
-                <BreadcrumbLink href="/create">Create</BreadcrumbLink>
+                <BreadcrumbLink href="/create">Anlegen</BreadcrumbLink>
               </BreadcrumbItem>
             </Breadcrumb>
 
