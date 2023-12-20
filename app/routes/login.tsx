@@ -1,12 +1,12 @@
 import { Heading } from "@chakra-ui/react";
-import Login from "~/component/auth/login";
+import LoginComponent from "~/component/auth/login";
 
-export default function Create() {
+export default function Login() {
     return (
       <div>
         <Heading>Login</Heading>
         <main>
-          <Login/>
+          <LoginComponent/>
         </main>
       </div>
     );
