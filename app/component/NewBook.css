@@ -1,20 +1,54 @@
 #note-form {
-    max-width: 30rem;
-    margin: 3rem auto;
+    max-width: 50rem;
+    margin: 3rem auto; /* Zentriert die Tabelle horizontal */
     padding: 2rem;
-    border-radius: 12px;
-    background-color: var(--color-primary-100);
+    border-radius: 15px;
+    background-color: solid yellow;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid yellow; /* Rahmen um die Tabelle */
+    display: inline-block; /* optional: Um die Breite an den Inhalt anzupassen */
+    text-align: left; /* Setzt den Text innerhalb der Tabelle links ausgerichtet */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
 #note-form label {
-    margin-bottom: 0.5rem;
+    margin-bottom:0.5rem;
     color: var(--color-primary-500);
     font-weight: bold;
+    line-height: 0.2;
 }
 
-
-.blue-input-border {
-    border-color: blue; 
-    outline-color: rgb(19, 24, 186); 
+.form-actions {
+    margin-top: 1.5rem; /* Optional: Fügt etwas Abstand oben hinzu */
+    text-align: center; /* Optional: Zentriert den Text innerhalb der Tabelle */
 }
+
+.form-actions button {
+    font: inherit;
+    cursor: pointer;
+    padding: 0.75rem 2rem;
+    border: black;
+    border-radius: 32px;
+    background-color: yellow;
+    color: var(--color-primary-700);
+    font-weight: bold;
+    font-size: 1.05rem;
+    margin-top: 1rem; /* Optional: Fügt etwas Abstand oben zum Button hinzu */
+  }
+
+  .body {
+    max-width: 50rem;
+    margin: 3rem auto;
+    padding: 2rem;
+    border-radius: 15px;
+    background-color: solid rgb(255, 246, 73);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid yellow;
+    display: inline-block;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
