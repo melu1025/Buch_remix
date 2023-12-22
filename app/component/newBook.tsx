@@ -26,7 +26,7 @@ const StarRating = ({ rating, setRating }) => {
       </Flex>
     );
   };
-
+  
 export default function NewBook () {
 
     const [rating, setRating] = useState(0);
@@ -43,7 +43,7 @@ export default function NewBook () {
     // };
 
     return (
-        <form method="post" id="note-form" className="body">
+        <form method="post" id="note-form" className="body" action="/create">
             <TableContainer>
                 <Table >
                 <TableCaption placement="top">Neues Buch anlegen</TableCaption>
