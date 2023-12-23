@@ -7,7 +7,9 @@
     "build": "remix build",
     "dev": "set PORT=4200 && remix dev --manual",
     "start": "remix-serve ./build/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "prettier": "prettier --cache --write \"src/**/*.ts\" \"__tests__/**/*.ts\"",
+    "prettier:check": "prettier --cache --check \"src/**/*.ts\" \"__tests__/**/*.ts\""
   },
   "dependencies": {
     "@chakra-ui/icons": "2.1.1",
@@ -30,6 +32,7 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.38.0",
+    "prettier": "3.1.1",
     "typescript": "^5.1.6"
   },
   "engines": {
