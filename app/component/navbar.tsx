@@ -1,47 +1,52 @@
 import React from 'react';
 import {
-  Flex,
-  Button,
-  Spacer,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Heading,
-  useColorMode,
-  IconButton,
+    Flex,
+    Button,
+    Spacer,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
 } from "@chakra-ui/react";
-import { MoonIcon } from "@chakra-ui/icons";
+import { StarIcon, SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { useNavigate } from "@remix-run/react";
 
 export default function Navbar() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handleLoginClick = () => {
-    navigate('/login'); // Ersetze '/login' durch den tatsächlichen Pfad deiner Login-Seite
-  };
+    const handleLoginClick = () => {
+        navigate('/login');
+    };
 
-  return (
-    <Flex as="nav" p="6px" alignItems="center" backgroundColor="black" color="white">
-      <Heading marginRight="50px">BuchApp</Heading>
-
-      <Breadcrumb fontWeight='bold' fontSize="20">
-        <BreadcrumbItem > 
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem> 
-          <BreadcrumbLink href="/search">Suche</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem> 
-          <BreadcrumbLink href="/create">Anlegen</BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
-
-      <Spacer></Spacer>
-      <IconButton onClick={toggleColorMode} aria-label="Toggle Dark/Light" icon={<MoonIcon/>}>
-        Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-      </IconButton>
-      <Button colorScheme='blue' onClick={handleLoginClick}>Login</Button>
-    </Flex>
-  );
+    return (
+        <Flex as="nav" p="60px" alignItems="center" backgroundColor="white" color="black">
+            <Breadcrumb fontWeight='bold' fontSize="20">
+                <BreadcrumbItem>
+                    <BreadcrumbLink href="/">
+                        <Flex alignItems="center">
+                            <StarIcon marginRight="2" />
+                            Home
+                        </Flex>
+                    </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                    <BreadcrumbLink href="/search" style={{ margin: '0 100px' }}>
+                        <Flex alignItems="center">
+                            <SearchIcon marginRight="2" />
+                            Suche
+                        </Flex>
+                    </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                    <BreadcrumbLink href="/create" style={{ margin: '0 50px' }}>
+                        <Flex alignItems="center">
+                            <AddIcon marginRight="2" />
+                            Anlegen
+                        </Flex>
+                    </BreadcrumbLink>
+                </BreadcrumbItem>
+            </Breadcrumb>
+            <Spacer></Spacer>
+            <Button colorScheme='blue' onClick={handleLoginClick}>Login</Button>
+        </Flex>
+    );
 }
