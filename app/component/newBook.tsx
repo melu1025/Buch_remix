@@ -3,6 +3,7 @@ import { StarIcon } from "@chakra-ui/icons";
 import styles from "./NewBook.css";
 import { useState } from "react";
 
+
 const StarRating = ({ rating, setRating }) => {
     return (
       <Flex direction="column" align="center">
@@ -115,7 +116,7 @@ export default function NewBook () {
                         <Td>
                             <StarRating rating={rating} setRating={setRating} />
                         </Td>
-                    </Tr>        
+                    </Tr>
                     <Tr>
                         <Td>
                             <label htmlFor="lieferbar">Lieferbar</label>
@@ -123,8 +124,8 @@ export default function NewBook () {
                         <Td>
                             <Checkbox id="lieferbar" name="lieferbar" />
                         </Td>
-                    </Tr>    
-                    <Tr>    
+                    </Tr>
+                    <Tr>
                         <Td>
                             <label htmlFor="homepage">Homepage</label>
                         </Td>
@@ -148,8 +149,8 @@ export default function NewBook () {
                   </div>
                 </CheckboxGroup>
               </Td>
-            </Tr>  
-        </Tbody> 
+            </Tr>
+        </Tbody>
     </Table>
     </TableContainer>
         <div className="form-actions">

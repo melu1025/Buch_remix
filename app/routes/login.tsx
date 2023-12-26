@@ -1,10 +1,13 @@
-import { Heading } from "@chakra-ui/react";
+
 import LoginComponent from "~/component/auth/login";
+import HorizontalBar from "~/component/bar";
+import barstyle from'~/component/bar.css';
+import '~/component/auth/login.css';
 
 export default function Login() {
     return (
       <div>
-        <Heading>Login</Heading>
+        <HorizontalBar title={'Login'} subtitle={'Melde dich bitte an'}></HorizontalBar>
         <main>
           <LoginComponent/>
         </main>
@@ -12,6 +15,6 @@ export default function Login() {
     );
   }
 
-//  export function links() {
-//    return [{ rel: 'stylesheet', href: newCreateStyle}];
-//  }
+ export function links() {
+    return [{ rel: 'stylesheet', href: barstyle}];
+ }

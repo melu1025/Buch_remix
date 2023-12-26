@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Flex, Box, Input, Button } from '@chakra-ui/react';
+import '~/component/auth/login.css';
 
 const LoginComponent = () => {
   const [username, setUsername] = useState('');
@@ -33,31 +35,39 @@ const LoginComponent = () => {
   };
 
   return (
-    <div>
-      <label>
-        Username:
-        <br />
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Password:
-        <br />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-      <br />
-      <button type="button" onClick={handleLogin}>
-        Login
-      </button>
-    </div>
+      <Flex direction="column" align="center" justify="center" height="100vh">
+        <Box>
+          <label>
+            Username:
+            <br />
+            <Input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+          </label>
+        </Box>
+        <Box>
+          <label>
+            Password:
+            <br />
+            <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+        </Box>
+        <Button
+            type="button"
+            onClick={handleLogin}
+            mt="4"
+            colorScheme="blue"
+            variant="solid"
+        >
+          Login
+        </Button>
+      </Flex>
   );
 };
 

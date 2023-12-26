@@ -7,8 +7,9 @@ import { Links,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import Navbar from "./component/navbar";
-import theme from "./theme.config";
+import Navbar from './component/navbar';
+import theme from './theme.config';
+
 
 export const meta: MetaFunction = () => {
     return [

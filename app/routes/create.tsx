@@ -1,21 +1,24 @@
-import { Heading } from "@chakra-ui/react";
-import { json, redirect } from "@remix-run/node";
+import {json, redirect } from "@remix-run/node";
 import NewBook from "~/component/newBook";
 import newCreateStyle from "~/component/NewBook.css";
+import {Outlet} from "@remix-run/react";
 
 export default function Create() {
   return (
     <div>
-      <Heading>Neues Buch anlegen</Heading>
+      <div>
+      <Outlet />
       <main>
-        <NewBook />
+          <NewBook>
+          </NewBook>
       </main>
+      </div>
     </div>
   );
 }
 
-const serverUrl = 'https://localhost:3000';  
-  
+const serverUrl = 'https://localhost:3000';
+
 export async function action({ request }) {
   try {
     const formData = await request.formData();
