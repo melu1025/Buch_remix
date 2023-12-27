@@ -51,7 +51,7 @@ export default function NewBook() {
 
     return (
       <div className="container">
-          <form method="post" id="note-form" className="form">
+          <form method="post" id="note-form" className="form" action="/create">
               <div className="form-section">
                   <label htmlFor="isbn" className="blue-text"></label>
                   <Input type="text" id="isbn" name="isbn" placeholder="ISBN" required className="blue-input-border" />
@@ -87,7 +87,7 @@ export default function NewBook() {
 
               <div className="form-section rating-section">
                   <label htmlFor="datum"></label>
-                  <Input type="text" id="datum" name="datum" placeholder="Datum" required />
+                  <Input type="text" id="datum" name="datum" placeholder="Datum" required pattern="\d{4}-\d{2}-\d{2}" title="Bitte geben Sie das Datum im Format JJJJ-MM-TT ein."/>
 
                   <label htmlFor="rating"></label>
                   <StarRating value={selectedRating} onChange={handleRatingChange} />
@@ -111,7 +111,7 @@ export default function NewBook() {
               </div>
 
               <div className="form-actions">
-                  <Button colorScheme="teal">
+                  <Button type="submit" colorScheme="teal">
                     Anlegen
                   </Button>
               </div>
