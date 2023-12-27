@@ -1,53 +1,40 @@
 import React from 'react';
-import {
-    Flex,
-    Button,
-    Spacer,
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-} from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 import { StarIcon, SearchIcon, AddIcon } from "@chakra-ui/icons";
-import { useNavigate } from "@remix-run/react";
+import { useNavigate, Link } from "@remix-run/react";
 
 export default function Navbar() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleLoginClick = () => {
-        navigate('/login');
-    };
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
 
-    return (
-        <Flex as="nav" p="60px" alignItems="center" backgroundColor="white" color="black">
-            <Breadcrumb fontWeight='bold' fontSize="20">
-                <BreadcrumbItem>
-                    <BreadcrumbLink href="/">
-                        <Flex alignItems="center">
-                            <StarIcon marginRight="2" />
-                            Home
-                        </Flex>
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbItem>
-                    <BreadcrumbLink href="/search" style={{ margin: '0 100px' }}>
-                        <Flex alignItems="center">
-                            <SearchIcon marginRight="2" />
-                            Suche
-                        </Flex>
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbItem>
-                    <BreadcrumbLink href="/create" style={{ margin: '0 50px' }}>
-                        <Flex alignItems="center">
-                            <AddIcon marginRight="2" />
-                            Anlegen
-                        </Flex>
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
-            </Breadcrumb>
-            <Spacer></Spacer>
-            <Button colorScheme='blue' onClick={handleLoginClick}>Login</Button>
+  return (
+    <Flex as="nav" p="60px" alignItems="center" backgroundColor="white" color="black">
+      <Link to="/" style={{ marginRight: "40px" }}>
+        <Flex alignItems="center" fontSize="lg">
+          <StarIcon marginRight="2" />
+          Home
         </Flex>
-    );
+      </Link>
+      <Link to="/search" style={{ marginRight: "40px" }}>
+        <Flex alignItems="center" fontSize="lg">
+          <SearchIcon marginRight="2" />
+          Suche
+        </Flex>
+      </Link>
+      <Link to="/create">
+        <Flex alignItems="center" fontSize="lg">
+          <AddIcon marginRight="2" />
+          Anlegen
+        </Flex>
+      </Link>
+      <Flex flex="1" justifyContent="flex-end">
+        <Button colorScheme='blue' onClick={handleLoginClick}>
+          Login
+        </Button>
+      </Flex>
+    </Flex>
+  );
 }
-
