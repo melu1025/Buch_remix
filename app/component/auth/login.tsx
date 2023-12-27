@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Flex, Box, Input, Button } from '@chakra-ui/react';
-import '~/component/auth/login.css';
+
 
 const LoginComponent = () => {
   const [username, setUsername] = useState('');
@@ -62,7 +62,7 @@ const LoginComponent = () => {
             type="button"
             onClick={handleLogin}
             mt="4"
-            colorScheme="blue"
+            colorScheme="teal"
             variant="solid"
         >
           Login

@@ -1,18 +1,17 @@
 import {json, redirect } from "@remix-run/node";
 import NewBook from "~/component/newBook";
-import newCreateStyle from "~/component/NewBook.css";
+import newbook from "~/component/newBook.css";
 import {Outlet} from "@remix-run/react";
-
+import HorizontalBar from "~/component/bar";
+import '~/component/bar.css';
 export default function Create() {
   return (
     <div>
-      <div>
-      <Outlet />
+      <HorizontalBar title={'Anlegen'} subtitle={'Lege ein Buch an'}></HorizontalBar>
       <main>
-          <NewBook>
-          </NewBook>
+          <NewBook />
+          <Outlet />
       </main>
-      </div>
     </div>
   );
 }
@@ -59,5 +58,5 @@ export async function action({ request }) {
 }
 
 export function links() {
-  return [{ rel: 'stylesheet', href: newCreateStyle}];
+  return [{ rel: 'stylesheet', href: newbook}];
 }

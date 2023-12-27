@@ -53,8 +53,8 @@ export default function Search() {
                         <option>Druckausgabe</option>
                         <option>Kindle</option>
                     </Select>
-                    <StarRating value={selectedRating} onChange={handleRatingChange} />
                 </Flex>
+                <StarRating value={selectedRating} onChange={handleRatingChange} />
                 <Button mt="4" colorScheme="teal" type="submit">
                     Suche
                 </Button>

@@ -2,7 +2,7 @@
 import LoginComponent from "~/component/auth/login";
 import HorizontalBar from "~/component/bar";
 import barstyle from'~/component/bar.css';
-import '~/component/auth/login.css';
+
 
 export default function Login() {
     return (
