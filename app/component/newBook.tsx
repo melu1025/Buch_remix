@@ -1,6 +1,7 @@
 // NewBook.jsx
-import { FC, useState } from 'react';
-import { Button, Input, Checkbox, Flex, Text } from '@chakra-ui/react';
+import type { FC} from 'react';
+import { useState } from 'react';
+import { Button, Input, Checkbox, Flex, Text, Select } from '@chakra-ui/react';
 import "./NewBook.css";
 
 interface StarRatingProps {
@@ -62,6 +63,19 @@ export default function NewBook() {
               </div>
 
               <div className="form-section">
+                  <label htmlFor="untertitel"></label>
+                  <Input type="text" id="untertitel" name="untertitel" placeholder="Untertitel" required />
+              </div>
+
+              <div className="form-section">
+                <label htmlFor="buchArt"></label>
+                <Select  id="buchArt" name="buchArt" placeholder="Art des Buches" required>
+                  <option value="KINDLE">KINDLE</option>
+                  <option value="DRUCKAUSGABE">DRUCKAUSGABE</option>
+                </Select>
+              </div>
+
+              <div className="form-section">
                   <label htmlFor="preis"></label>
                   <Input type="number" id="preis" name="preis" step="0.01" placeholder="Preis" required />
               </div>
@@ -97,9 +111,7 @@ export default function NewBook() {
               </div>
 
               <div className="form-actions">
-                  <Button
-                    colorScheme="teal"
-                    >
+                  <Button colorScheme="teal">
                     Anlegen
                   </Button>
               </div>
