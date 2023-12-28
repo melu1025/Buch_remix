@@ -6,7 +6,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "set PORT=4200 && remix dev --manual",
-    "start": "remix-serve ./build/index.js",
+    "start": "remix-serve ./build/index.js --ssl --ssl-key=app/certificate/key.pem --ssl-cert=app/certificate/certificate.crt",
     "typecheck": "tsc",
     "prettier": "prettier --cache --write \"src/**/*.ts\" \"__tests__/**/*.ts\"",
     "prettier:check": "prettier --cache --check \"src/**/*.ts\" \"__tests__/**/*.ts\""
