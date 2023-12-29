@@ -22,8 +22,6 @@ const LoginComponent = () => {
         // Token im LocalStorage speichern
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', JSON.stringify(data.roles));
-        //sessionStorage.setItem('token', data.token);
-        //sessionStorage.setItem('role', JSON.stringify(data.roles));
 
         console.log('Erfolgreich eingeloggt:', data);
       } else {
