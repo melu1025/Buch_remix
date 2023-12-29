@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Flex, Box, Input, Button } from '@chakra-ui/react';
+import axios from 'axios';
 
 
 const LoginComponent = () => {
@@ -8,22 +9,20 @@ const LoginComponent = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('https://localhost:3000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await axios.post(`https://localhost:3000/auth/login`, {
+        username: username,
+        password: password,
+    });
 
-      if (response.ok) {
-        const data = await response.json();
+      if (response.status === 200) {
+        const { token, roles } = response.data;
         
         // Token im LocalStorage speichern
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('role', JSON.stringify(data.roles));
+        localStorage.setItem('token',token);
+        localStorage.setItem('role', JSON.stringify(roles));
 
-        console.log('Erfolgreich eingeloggt:', data);
+        console.log('Erfolgreich eingeloggt:');
+        console.log(response.data);
       } else {
         console.error('Fehler beim Einloggen:', response.statusText);
       }
