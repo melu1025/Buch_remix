@@ -1,6 +1,12 @@
-import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
+import { Table, TableCaption, TableContainer, Tbody, Tfoot, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import type Buch from "./book.interface";
 
-export default function BookTable() {
+export default function BookTable(data: Buch[]) {
+  const buecher: Buch[] = Object.values(data)
+  if(data === undefined){
+    return(<div></div>)
+  }
+  console.log(data)
     return (
       <div>        
         <TableContainer>
@@ -8,34 +14,21 @@ export default function BookTable() {
     <TableCaption placement="top">Gefundene Buecher</TableCaption>
     <Thead>
       <Tr>
-        <Th>BuchID</Th>
+        <Th>ISBN</Th>
         <Th>Titel</Th>
         <Th >Bewertung</Th>
       </Tr>
     </Thead>
     <Tbody>
-      <Tr>
-        <Td>inches</Td>
-        <Td>millimetres (mm)</Td>
-        <Td isNumeric>25.4</Td>
-      </Tr>
-      <Tr>
-        <Td>feet</Td>
-        <Td>centimetres (cm)</Td>
-        <Td isNumeric>30.48</Td>
-      </Tr>
-      <Tr>
-        <Td>yards</Td>
-        <Td>metres (m)</Td>
-        <Td isNumeric>0.91444</Td>
-      </Tr>
+       {buecher.map((buch: Buch) => (
+      <Tr key={buch.isbn}>
+        <Td>{buch.isbn}</Td>
+        <Td>{buch.titel.titel}</Td>
+        <Td isNumeric>{buch.rating}</Td>
+      </Tr> 
+       ))}
     </Tbody>
     <Tfoot>
-      <Tr>
-        <Th>To convert</Th>
-        <Th>into</Th>
-        <Th isNumeric>multiply by</Th>
-      </Tr>
     </Tfoot>
   </Table>
 </TableContainer>
