@@ -12,7 +12,7 @@
     "prettier:check": "prettier --cache --check \"src/**/*.ts\" \"__tests__/**/*.ts\""
   },
   "dependencies": {
-    "@chakra-ui/icons": "2.1.1",
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "2.8.2",
     "@emotion/react": "11.11.1",
     "@emotion/server": "11.11.0",
@@ -34,7 +34,14 @@
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.38.0",
     "prettier": "3.1.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "eslint-plugin-array-func": "^3.1.8",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-no-use-extend-native": "^0.5.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-sonarjs": "^0.21.0",
+    "eslint-plugin-unicorn": "^48.0.1"
   },
   "engines": {
     "node": ">=18.0.0"
