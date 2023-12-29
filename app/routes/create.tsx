@@ -1,4 +1,5 @@
-import {json, redirect } from "@remix-run/node";
+import type {ActionFunctionArgs} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import NewBook from "~/component/newBook";
 import newbook from "~/component/newBook.css";
 import {Outlet} from "@remix-run/react";
@@ -21,7 +22,7 @@ export default function Create() {
 
 const serverUrl = 'https://localhost:3000';
 
-export async function action({ request }) {
+export async function action({ request } : ActionFunctionArgs ) {
   try {
     const formData = await request.formData();
 
@@ -58,7 +59,7 @@ export async function action({ request }) {
 
     const userRole = 'admin';
 
-    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiNjRmNWVkYzItOTIxYy00MmQ1LWI1MjUtODdmZDQ1MWViYWZjIiwiaWF0IjoxNzAzNzY5NDAwLCJleHAiOjE3MDM3NzMwMDAsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.pKuZVyBc87wJSTzNqPz0XSTCJ0diVehB90gSvqu_7H_HVjg0fy2yBmcMt835Y_BGqt8A84dU_t5GiVda-Ltx7nx30ZYf8sQsStNf7Lnlw3FLr5LKq5T8iGfq5cckHTMgHNp5oGK6mbiMnqBIDuqnzAGHsVLUV5QlQmGJSDfU32iyS1Usu_viqMujyGMLa_OIyPC66spcFs1-PF5d2Z5GD0BpZG3BLpJIvAgQakllHEn6Mj0O2oMJOc6WVdSdZAN3QU9Tgodxo2aJbcIp7znyoqud4f18bUvBGOw8weEsECmCZ4jJlgmZI24BJz7qFvfAYEMORdkdG7Rhgu9mv9kK7w";
+    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiOTY0NTEzZTUtNzkwMi00NTgwLWI2NWItY2M2ZDEzZTNmMGI2IiwiaWF0IjoxNzAzODc3OTE0LCJleHAiOjE3MDM4ODE1MTQsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.GGszrAy1mFyxiEuGmR3ML0vuSK2MtDsIHiRqeo3kfaAnSNJ8jrt_eoxvz7JfAfRgc3azh_PSMnsriGLMUUC9uREvcSmsAlTziEzrNe-lOHySjyJ4xT95Y_-D32W-haT-kX203cis5yt6ja_FKg8ovLBaa6auQlX-qTWvKOKYL21rblZnTXRlMN8zWPelpQ8GLZGBfH5aCfX0sSKU-qyHCb7e_Qs9n0im72jREnSNeKrx_OizzLsn1xqdQ2oAXOw_Kirkq4ZHtt3siAC053rC7oNg1hhCfY591BfCx_EYffZTrTT0uyAtWhBp_r9ZxxjMyzwY8Q56bHch06I4OhLC_Q";
   
     // Konfiguration des HTTPS-Agenten
     const agent = new https.Agent({
