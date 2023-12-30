@@ -4,14 +4,14 @@ import NewBook from "~/component/newBook";
 import newbook from "~/component/newBook.css";
 import {Outlet} from "@remix-run/react";
 import HorizontalBar from "~/component/bar";
-import '~/component/bar.css';
+import barstyle from '~/component/bar.css';
 import https from 'https';
 import fs from 'fs/promises';
 
 export default function Create() {
   return (
     <div>
-      <HorizontalBar title={'Anlegen'} subtitle={'Lege ein Buch an'}></HorizontalBar>
+      <HorizontalBar title={'Anlegen'} subtitle={'Mehr als nur Wort:Dein Buch ,unsere Reise'}></HorizontalBar>
       <main>
           <NewBook />
           <Outlet />
@@ -101,5 +101,8 @@ export async function action({ request } : ActionFunctionArgs ) {
 }
 
 export function links() {
-  return [{ rel: 'stylesheet', href: newbook}];
+  return [
+    { rel: 'stylesheet', href: barstyle},
+    { rel: 'stylesheet', href: newbook },
+  ];
 }
