@@ -31,7 +31,8 @@ export default function Search() {
   return (
     <div>
       <main>
-        <HorizontalBar title="Suche" subtitle="Finde dein Lieblingsbuch" />
+        <HorizontalBar title="Suche" subtitle="Stöbern Sie durch die Bücherwelt:Finde Sie Ihren nächsten literrarischen
+        Begleiter mit unserer leistungsstarken Suchfunktion" />
         <Flex
           direction="column"
           align="center"
