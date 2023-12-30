@@ -14,8 +14,8 @@ export async function fetchBuch(suchkriterien: string) {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
-  //   delete empty values
-  for (const [key, value] of [...formData.entries()]) {
+  //   delete empty values    //orginally [...formData.entries()])
+  for (const [key, value] of formData.entries()) {
     if (value === '') formData.delete(key);
   }
 
