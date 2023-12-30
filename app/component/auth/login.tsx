@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { Flex, Box, Input, Button } from '@chakra-ui/react';
+import { useNavigate } from "@remix-run/react";
+import { Flex, Box, Input, Button, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@chakra-ui/react';
 import axios from 'axios';
+import { useAuth } from './AuthContext';
 
+const LoginComponent: React.FC = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-const LoginComponent = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -12,17 +17,15 @@ const LoginComponent = () => {
       const response = await axios.post(`https://localhost:3000/auth/login`, {
         username: username,
         password: password,
-    });
+      });
 
       if (response.status === 200) {
         const { token, roles } = response.data;
-        
-        // Token im LocalStorage speichern
-        localStorage.setItem('token',token);
-        localStorage.setItem('role', JSON.stringify(roles));
-
-        console.log('Erfolgreich eingeloggt:');
-        console.log(response.data);
+        login({ token, roles });
+        localStorage.setItem('token', token);
+        localStorage.setItem('roles', JSON.stringify(roles));
+        console.log('Erfolgreich eingeloggt:', response.data);
+        onOpen();
       } else {
         console.error('Fehler beim Einloggen:', response.statusText);
       }
@@ -31,40 +34,59 @@ const LoginComponent = () => {
     }
   };
 
+  const handleClose = () => {
+    onClose(); // Schließt das Popup
+    navigate('/'); // Leitet zur Startseite weiter
+  };
+
   return (
-      <Flex direction="column" align="center" justify="center" height="100vh">
-        <Box>
-          <label>
-            Username:
-            <br />
-            <Input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-          </label>
-        </Box>
-        <Box>
-          <label>
-            Password:
-            <br />
-            <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-        </Box>
-        <Button
-            type="button"
-            onClick={handleLogin}
-            mt="4"
-            colorScheme="teal"
-            variant="solid"
-        >
-          Login
-        </Button>
-      </Flex>
+    <Flex direction="column" align="center" justify="center" height="100vh">
+      <Box>
+        <label>
+          Username:
+          <br />
+          <Input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </label>
+      </Box>
+      <Box>
+        <label>
+          Password:
+          <br />
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+      </Box>
+      <Button
+        type="button"
+        onClick={handleLogin}
+        mt="4"
+        colorScheme="teal"
+        variant="solid"
+      >
+        Login
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Erfolgreich angemeldet</ModalHeader>
+          <ModalBody>
+            <Text>Ihre Anmeldung war erfolgreich!</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="teal" onClick={handleClose}>
+              OK
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Flex>
   );
 };
 

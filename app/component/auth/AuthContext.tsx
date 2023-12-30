@@ -1,40 +1,44 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type AuthContextType = {
-  token: string;
+interface AuthContextProps {
+  isLoggedIn: boolean;
+  token: string | null;
   roles: string[];
-  updateAuthInfo: (token: string, roles: string[]) => void;
-};
+  login: (data: { token: string; roles: string[] }) => void;
+  logout: () => void;
+}
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-type AuthProviderProps = {
+interface AuthProviderProps {
   children: ReactNode;
-};
+}
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [token, setToken] = useState<string>('');
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
   const [roles, setRoles] = useState<string[]>([]);
 
-  const updateAuthInfo = (newToken: string, newRoles: string[]) => {
-    setToken(newToken);
-    setRoles(newRoles);
+  const login = (data: { token: string; roles: string[] }) => {
+    setLoggedIn(true);
+    setToken(data.token);
+    setRoles(data.roles);
   };
 
-  const contextValues: AuthContextType = {
-    token,
-    roles,
-    updateAuthInfo,
+  const logout = () => {
+    setLoggedIn(false);
+    setToken(null);
+    setRoles([]);
   };
 
   return (
-    <AuthContext.Provider value={contextValues}>
+    <AuthContext.Provider value={{ isLoggedIn, token, roles, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
+export const useAuth = (): AuthContextProps => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
