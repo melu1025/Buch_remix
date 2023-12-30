@@ -1,15 +1,16 @@
 import type { FC} from 'react';
 import React, { useState } from 'react';
 import { Button, Input, Checkbox, Flex, Text, Select } from '@chakra-ui/react';
-import "./NewBook.css";
-import { Form } from '@remix-run/react';
+import "./newBook.css";
+import PopUp from '~/component/popUp';
+import { Form, useNavigate } from '@remix-run/react';
 
-interface StarRatingProps {
+interface StarRatingProperties {
     value: number;
     onChange: (rating: number) => void;
 }
 
-const StarRating: FC<StarRatingProps> = ({ value, onChange }) => {
+const StarRating: FC<StarRatingProperties> = ({ value, onChange }) => {
     const [selectedRating, setSelectedRating] = useState(value);
   
     const handleClick = (rating: number) => {
@@ -40,14 +41,16 @@ const StarRating: FC<StarRatingProps> = ({ value, onChange }) => {
     );
 };
 
+
+
 export default function NewBook() {
 
     const [isbn, changeIsbn] = useState('');
     const [titel, changeTitel] = useState('');	
     const [untertitel, changeUntertitel] = useState('');
     const [buchArt, changeBuchArt] = useState('');
-    const [preis, changePreis] = useState(0.0);
-    const [rabatt, changeRabatt] = useState(0.0);
+    const [preis, changePreis] = useState(0);
+    const [rabatt, changeRabatt] = useState(0);
     const [datum, changeDatum] = useState('');	
     const [selectedRating, setSelectedRating] = useState(0);
     const [homepage, changeHomepage] = useState('');
@@ -77,11 +80,11 @@ export default function NewBook() {
         changeBuchArt(buchArt);
     };
     const handlePreisChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        const preis = parseFloat(event.target.value);
+        const preis = Number.parseFloat(event.target.value);
         changePreis(preis);
     };
     const handleRabattChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        const rabatt = parseFloat(event.target.value);
+        const rabatt = Number.parseFloat(event.target.value);
         changeRabatt(rabatt);
     };
     const handleDatumChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -101,6 +104,18 @@ export default function NewBook() {
     const handleLieferbarChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const lieferbar = event.target.checked;
         changeLieferbar(lieferbar);
+    };
+
+    const navigate = useNavigate();
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+    const openSuccessModal = () => {
+      setIsSuccessModalOpen(true);
+    };
+
+    const closeSuccessModal = () => {
+      setIsSuccessModalOpen(false);
+      navigate('/search');
     };
 
     return (
@@ -168,11 +183,15 @@ export default function NewBook() {
               </div>
 
               <div className="form-actions">
-                  <Button type="submit" colorScheme="teal">
-                    Anlegen
-                  </Button>
+                <Button type="submit" colorScheme="teal" 
+                // onClick={openSuccessModal}
+                >
+                  Anlegen
+                </Button>
               </div>
           </Form>
+
+          <PopUp isOpen={isSuccessModalOpen} onClose={closeSuccessModal} successMessage="Buch wurde erfolgreich neu angelegt" />
       </div>
     );
 }
