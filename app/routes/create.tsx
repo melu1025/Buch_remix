@@ -1,16 +1,17 @@
-import {json, redirect } from "@remix-run/node";
-import NewBook from "~/component/newBook";
+import type {ActionFunctionArgs} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import NewBook from "~/component/newBook"; 
 import newbook from "~/component/newBook.css";
 import {Outlet} from "@remix-run/react";
 import HorizontalBar from "~/component/bar";
-import '~/component/bar.css';
-import https from 'https';
-import fs from 'fs/promises';
+import barstyle from '~/component/bar.css';
+import https from 'node:https';
+import fs from 'node:fs/promises';
 
 export default function Create() {
   return (
     <div>
-      <HorizontalBar title={'Anlegen'} subtitle={'Lege ein Buch an'}></HorizontalBar>
+      <HorizontalBar title={'Anlegen'} subtitle={'Mehr als nur Wort:Dein Buch ,unsere Reise'}></HorizontalBar>
       <main>
           <NewBook />
           <Outlet />
@@ -21,16 +22,16 @@ export default function Create() {
 
 const serverUrl = 'https://localhost:3000';
 
-export async function action({ request }) {
+export async function action({ request } : ActionFunctionArgs ) {
   try {
     const formData = await request.formData();
 
     const buchDaten = {
       isbn: formData.get('isbn'),
-      rating: parseInt(formData.get('rating')), 
+      rating: Number.parseInt(formData.get('rating')), 
       art: formData.get('buchArt'), 
-      preis: parseFloat(formData.get('preis')), 
-      rabatt: parseFloat(formData.get('rabatt')), 
+      preis: Number.parseFloat(formData.get('preis')), 
+      rabatt: Number.parseFloat(formData.get('rabatt')), 
       lieferbar: formData.get('lieferbar') === 'on', // Checkbox: true, wenn aktiviert, sonst false
       datum: formData.get('datum'),
       homepage: formData.get('homepage'),
@@ -58,11 +59,12 @@ export async function action({ request }) {
 
     const userRole = 'admin';
 
-    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiNjRmNWVkYzItOTIxYy00MmQ1LWI1MjUtODdmZDQ1MWViYWZjIiwiaWF0IjoxNzAzNzY5NDAwLCJleHAiOjE3MDM3NzMwMDAsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.pKuZVyBc87wJSTzNqPz0XSTCJ0diVehB90gSvqu_7H_HVjg0fy2yBmcMt835Y_BGqt8A84dU_t5GiVda-Ltx7nx30ZYf8sQsStNf7Lnlw3FLr5LKq5T8iGfq5cckHTMgHNp5oGK6mbiMnqBIDuqnzAGHsVLUV5QlQmGJSDfU32iyS1Usu_viqMujyGMLa_OIyPC66spcFs1-PF5d2Z5GD0BpZG3BLpJIvAgQakllHEn6Mj0O2oMJOc6WVdSdZAN3QU9Tgodxo2aJbcIp7znyoqud4f18bUvBGOw8weEsECmCZ4jJlgmZI24BJz7qFvfAYEMORdkdG7Rhgu9mv9kK7w";
+    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiZWMyMzE0YTEtNWYwZC00ZTFhLWIxMTktOTBhMzM2NWQ4N2JlIiwiaWF0IjoxNzAzOTY2OTAyLCJleHAiOjE3MDM5NzA1MDIsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.c3a460dJU4meGMYtStmA6CdxOZw0U2cvBmux_JFq9HlXAwnFB6NV_YIxNqVz6EmWL6PkHZfhNNcmxIAQ0karehSbx-9R83Bl_PwfDFYKXSu7FTK68Zn-7mQGUzQhlkz7BLvXQ4j7ny9w_gWv1ZZHiNm8A33PM_5R9X7WBjhu2UXmGIpGPwH7UOzjAlXLjJ3xOBvfvFyqIcYtBD6t1ocpAG-mdCoLg1ujUHNTB9e6LmNmnmUzGY8Dr9wrDaolWXq2ugMwNpJOl8EXNT5ntEQzQeJa77x3T6blLxSUshcyk3pHMvVdLh7QBeEAjY5m_RXnVxuk2XnCKceE0aXXnc2brA";
   
     // Konfiguration des HTTPS-Agenten
     const agent = new https.Agent({
-      ca: (await fs.readFile('app/certificate/certificate.crt')).toString('utf-8'),
+      // eslint-disable-next-line unicorn/no-await-expression-member
+      ca: (await fs.readFile('app/certificate/certificate.crt')).toString('utf8'),
     });
   
      // Verwendung des HTTPS-Agenten im Fetch-Aufruf
@@ -85,9 +87,14 @@ export async function action({ request }) {
     console.log('Server response:', response.status, responseBody);
 
     //Modal für Response SC201
-    // if (response.status === 201) {
-    //   setIsSuccessModalOpen(true);
-    // }
+
+  //   if (response.status === 201) {
+  //     // eslint-disable-next-line no-undef
+  //     openSuccessModal();  // Hier öffnest du das Modal nach dem erfolgreichen Anlegen
+  //     // Weiterleitung erfolgt erst nach Schließen des Modals
+  //  } else {
+  //     //folgt noch
+  //  }
 
     // Weiterleitung
     return redirect('/search');
@@ -100,5 +107,10 @@ export async function action({ request }) {
 }
 
 export function links() {
-  return [{ rel: 'stylesheet', href: newbook}];
+  return [
+    { rel: 'stylesheet', href: barstyle},
+    { rel: 'stylesheet', href: newbook },
+  ];
 }
+
+

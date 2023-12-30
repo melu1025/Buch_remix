@@ -1,5 +1,6 @@
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import type { MetaFunction } from '@remix-run/node'
+import { AuthProvider } from './component/auth/AuthContext';
 import { Links,
   LiveReload,
   Meta,
@@ -50,8 +51,10 @@ export default function App() {
   return (
     <Document>
       <ChakraProvider>
-        <Navbar/>
-        <Outlet />
+        <AuthProvider>
+          <Navbar />
+          <Outlet />
+        </AuthProvider>
       </ChakraProvider>
     </Document>
   );
