@@ -1,12 +1,12 @@
 import type {ActionFunctionArgs} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import NewBook from "~/component/newBook";
+import NewBook from "~/component/newBook"; 
 import newbook from "~/component/newBook.css";
 import {Outlet} from "@remix-run/react";
 import HorizontalBar from "~/component/bar";
 import barstyle from '~/component/bar.css';
-import https from 'https';
-import fs from 'fs/promises';
+import https from 'node:https';
+import fs from 'node:fs/promises';
 
 export default function Create() {
   return (
@@ -28,10 +28,10 @@ export async function action({ request } : ActionFunctionArgs ) {
 
     const buchDaten = {
       isbn: formData.get('isbn'),
-      rating: parseInt(formData.get('rating')), 
+      rating: Number.parseInt(formData.get('rating')), 
       art: formData.get('buchArt'), 
-      preis: parseFloat(formData.get('preis')), 
-      rabatt: parseFloat(formData.get('rabatt')), 
+      preis: Number.parseFloat(formData.get('preis')), 
+      rabatt: Number.parseFloat(formData.get('rabatt')), 
       lieferbar: formData.get('lieferbar') === 'on', // Checkbox: true, wenn aktiviert, sonst false
       datum: formData.get('datum'),
       homepage: formData.get('homepage'),
@@ -59,11 +59,12 @@ export async function action({ request } : ActionFunctionArgs ) {
 
     const userRole = 'admin';
 
-    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiOTY0NTEzZTUtNzkwMi00NTgwLWI2NWItY2M2ZDEzZTNmMGI2IiwiaWF0IjoxNzAzODc3OTE0LCJleHAiOjE3MDM4ODE1MTQsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.GGszrAy1mFyxiEuGmR3ML0vuSK2MtDsIHiRqeo3kfaAnSNJ8jrt_eoxvz7JfAfRgc3azh_PSMnsriGLMUUC9uREvcSmsAlTziEzrNe-lOHySjyJ4xT95Y_-D32W-haT-kX203cis5yt6ja_FKg8ovLBaa6auQlX-qTWvKOKYL21rblZnTXRlMN8zWPelpQ8GLZGBfH5aCfX0sSKU-qyHCb7e_Qs9n0im72jREnSNeKrx_OizzLsn1xqdQ2oAXOw_Kirkq4ZHtt3siAC053rC7oNg1hhCfY591BfCx_EYffZTrTT0uyAtWhBp_r9ZxxjMyzwY8Q56bHch06I4OhLC_Q";
+    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiZWMyMzE0YTEtNWYwZC00ZTFhLWIxMTktOTBhMzM2NWQ4N2JlIiwiaWF0IjoxNzAzOTY2OTAyLCJleHAiOjE3MDM5NzA1MDIsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.c3a460dJU4meGMYtStmA6CdxOZw0U2cvBmux_JFq9HlXAwnFB6NV_YIxNqVz6EmWL6PkHZfhNNcmxIAQ0karehSbx-9R83Bl_PwfDFYKXSu7FTK68Zn-7mQGUzQhlkz7BLvXQ4j7ny9w_gWv1ZZHiNm8A33PM_5R9X7WBjhu2UXmGIpGPwH7UOzjAlXLjJ3xOBvfvFyqIcYtBD6t1ocpAG-mdCoLg1ujUHNTB9e6LmNmnmUzGY8Dr9wrDaolWXq2ugMwNpJOl8EXNT5ntEQzQeJa77x3T6blLxSUshcyk3pHMvVdLh7QBeEAjY5m_RXnVxuk2XnCKceE0aXXnc2brA";
   
     // Konfiguration des HTTPS-Agenten
     const agent = new https.Agent({
-      ca: (await fs.readFile('app/certificate/certificate.crt')).toString('utf-8'),
+      // eslint-disable-next-line unicorn/no-await-expression-member
+      ca: (await fs.readFile('app/certificate/certificate.crt')).toString('utf8'),
     });
   
      // Verwendung des HTTPS-Agenten im Fetch-Aufruf
@@ -86,9 +87,14 @@ export async function action({ request } : ActionFunctionArgs ) {
     console.log('Server response:', response.status, responseBody);
 
     //Modal für Response SC201
-    // if (response.status === 201) {
-    //   setIsSuccessModalOpen(true);
-    // }
+
+  //   if (response.status === 201) {
+  //     // eslint-disable-next-line no-undef
+  //     openSuccessModal();  // Hier öffnest du das Modal nach dem erfolgreichen Anlegen
+  //     // Weiterleitung erfolgt erst nach Schließen des Modals
+  //  } else {
+  //     //folgt noch
+  //  }
 
     // Weiterleitung
     return redirect('/search');
@@ -106,3 +112,5 @@ export function links() {
     { rel: 'stylesheet', href: newbook },
   ];
 }
+
+
