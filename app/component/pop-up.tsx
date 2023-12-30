@@ -10,7 +10,7 @@ interface PopUpProperty {
 const PopUp: React.FC<PopUpProperty> = ({ isOpen, onClose, successMessage }) => {
   
   useEffect(() => {
-    // Logik für das PopUp (falls erforderlich)
+    // Logik für das PopUp
   }, [isOpen]);
 
   return (
