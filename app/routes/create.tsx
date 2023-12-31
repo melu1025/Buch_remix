@@ -1,7 +1,7 @@
 import type {ActionFunctionArgs} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import NewBook from "~/component/newBook"; 
-import newbook from "~/component/newBook.css";
+import NewBook from "~/component/new-book"; 
+import newbook from "~/component/new-book.css";
 import {Outlet} from "@remix-run/react";
 import HorizontalBar from "~/component/bar";
 import barstyle from '~/component/bar.css';
@@ -11,7 +11,7 @@ import fs from 'node:fs/promises';
 export default function Create() {
   return (
     <div>
-      <HorizontalBar title={'Anlegen'} subtitle={'Mehr als nur Wort:Dein Buch ,unsere Reise'}></HorizontalBar>
+      <HorizontalBar title={'Anlegen'} subtitle={'Mehr als nur Wort: Dein Buch, unsere Reise'}></HorizontalBar>
       <main>
           <NewBook />
           <Outlet />
@@ -50,16 +50,10 @@ export async function action({ request } : ActionFunctionArgs ) {
     };
 
     console.log('Buchdaten vor dem Absenden:', buchDaten);
-  
-    //++++++++++++++++
-
-    //Nächste Aufgabe
-    // Validierung
-    // .....
 
     const userRole = 'admin';
 
-    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiZWMyMzE0YTEtNWYwZC00ZTFhLWIxMTktOTBhMzM2NWQ4N2JlIiwiaWF0IjoxNzAzOTY2OTAyLCJleHAiOjE3MDM5NzA1MDIsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.c3a460dJU4meGMYtStmA6CdxOZw0U2cvBmux_JFq9HlXAwnFB6NV_YIxNqVz6EmWL6PkHZfhNNcmxIAQ0karehSbx-9R83Bl_PwfDFYKXSu7FTK68Zn-7mQGUzQhlkz7BLvXQ4j7ny9w_gWv1ZZHiNm8A33PM_5R9X7WBjhu2UXmGIpGPwH7UOzjAlXLjJ3xOBvfvFyqIcYtBD6t1ocpAG-mdCoLg1ujUHNTB9e6LmNmnmUzGY8Dr9wrDaolWXq2ugMwNpJOl8EXNT5ntEQzQeJa77x3T6blLxSUshcyk3pHMvVdLh7QBeEAjY5m_RXnVxuk2XnCKceE0aXXnc2brA";
+    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiMWMxYjY2YjMtNDI3My00OTFjLWE2N2UtYTcxYjNlYmE5MzM3IiwiaWF0IjoxNzA0MDEwMjAxLCJleHAiOjE3MDQwMTM4MDEsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.SbTHlK0A37g1fX-0XEoLnSSRWPUotKP_k4q0_YIEkYgDmYMgnXaHhTbCvgzNHC5Bik-MirQNw5GwgGe1fm2rYbxGLrAv7xiAouOmBxlMwgvAazFL3kywb44FQ27fKTzeX6fcdgb2RyYKpIHg9QErM_vp9MP3n_K8x4e6zD-kYm5Em_saukmN2toRTjpnTbYwBkWMzsWkDcwhnelN_6CoF30bjpMs5JVLW1rPE-srn1LOFLY-t96OSZ9DcZX2WYkMLACDmEKXbpOLMihhFvz7ppu11x__gXTpFocXcrzgBpC4J4hROyVD3tzdu1GeSpQa0fpV18CLsLtrDju1T2n_yw";
   
     // Konfiguration des HTTPS-Agenten
     const agent = new https.Agent({

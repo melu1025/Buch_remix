@@ -57,15 +57,14 @@ export default function NewBook() {
     const [schlagwort, setSchlagwort] = useState('');
     const [lieferbar, changeLieferbar] = useState(true);
 
-
-    // +++++++++++++++++++++++++++++
-    //  Validierung fehlt noch
-    // ++++++++++++++++++++++++++++
-
-
     const handleIsbnChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const isbn = event.target.value;
         changeIsbn(isbn);
+
+        const isIsbnConform = /^(978|979)-\d{1,5}-\d{1,7}-\d{1,6}-\d$/.test(isbn,);
+        if (!isIsbnConform) {
+            alert('Die eingegebene ISBN ist ungültig. Bitte überprüfen Sie die Eingabe.');
+        }
     }
     const handleTitelChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const titel = event.target.value;
@@ -81,22 +80,68 @@ export default function NewBook() {
     };
     const handlePreisChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const preis = Number.parseFloat(event.target.value);
-        changePreis(preis);
+
+        if(preis<=0) {
+            alert('Der Wert für den Preis muss größer als 0 sein.');
+        }
+        else {
+            changePreis(preis);
+        }
+
     };
+
+    const minRabatt = 0.01;
     const handleRabattChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const rabatt = Number.parseFloat(event.target.value);
+
+        if(rabatt<=1 && rabatt >=minRabatt){
         changeRabatt(rabatt);
+        }
+        else{
+            alert('Der Wert für den Rabatt muss mindestens als 0 aber höchstens 1 sein.');
+        }
     };
     const handleDatumChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const datum =event.target.value;
         changeDatum(datum);
+
+        const isDatumConform = /^\d{4}-\d{2}-\d{2}$/.test(datum);
+        if (isDatumConform) {
+                console.log('Datum ist richtig eingegeben worden');
+        } else {
+            console.error('Falsches Datumsformat! Bitte verwenden Sie das Format JJJJ-MM-TT.');
+    
+        }
+
     };
-    const handleRatingChange = (rating: number) => {
+    const handleRatingChange = (value: number) => {
+        const rating = value;
         setSelectedRating(rating);
+        if(Number.isNaN(rating)) {
+            alert('Es handelt sich um keine Zahl');
+        }
+        else{
+            if(rating>5) {
+                setSelectedRating(5);
+            }
+            else{
+                setSelectedRating(rating);
+            }
+            if(rating<0) {
+                setSelectedRating(0);
+            }
+        }
     };
     const handleHomepageChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const homepage = event.target.value;
         changeHomepage(homepage);
+
+        const isHomepageConform = /^https:\/\/\w+(\.\w+)+$/.test(homepage);
+        if (isHomepageConform) {
+            console.log('Falsche Adresseangabe');
+        } else {
+            //folgt noch
+        }
     };
     const handleSchlagwortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSchlagwort(event.target.value);
@@ -151,7 +196,7 @@ export default function NewBook() {
 
               <div className="form-section">
                   <label htmlFor="rabatt"></label>
-                  <Input type="number" id="rabatt" name="rabatt" step="0.01" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} required />
+                  <Input type="text" id="rabatt" name="rabatt" step="0.01" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} required />
               </div>
 
               <div className="form-section rating-section">
