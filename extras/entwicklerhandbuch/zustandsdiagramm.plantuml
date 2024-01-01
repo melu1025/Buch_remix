@@ -1,0 +1,48 @@
+@startuml Zustandsdiagramm
+
+[*] --> index
+index: session
+
+state "/login" as auth {
+    Anmeldeformular: username
+    Anmeldeformular: password
+    state Anmeldergebnis <<choice>>
+
+    [*] --> Anmeldeformular
+    Anmeldeformular --> Anmeldergebnis
+    Anmeldergebnis --> AnmeldeFehler: Fehlerhafte Daten
+    Anmeldergebnis --> BackendFehlerAuth: Backend nicht erreichbar
+    Anmeldergebnis --> [*]: Erfolg
+}
+
+state "/create" as create {
+    Anlegeformular: form
+    state Anmeldeergebnis <<choice>>
+
+    [*] --> Anlegeformular
+    Anlegeformular --> Anmeldeergebnis
+    Anmeldeergebnis --> AnlegeFehler: Fehlerhafte Daten
+    Anmeldeergebnis --> BackendFehlerCreate: Backend nicht erreichbar
+    Anmeldeergebnis --> [*]: Erfolg
+}
+
+state "/[id]" as id {
+    LadenId: true / false
+    state Ladeergebnis <<choice>>
+
+    [*] --> LadenId
+    LadenId --> Ladeergebnis: false
+    Ladeergebnis --> GefundenesBuch: Buch gefunden
+    Ladeergebnis --> KeinBuecher: Kein Buch gefunden
+    Ladeergebnis --> BackendFehlerId: Backend nicht erreichbar
+}
+
+index --> auth: Button "Login"
+index --> auth: Button "Logout"
+index --> create: Menüpunkt "Anlegen"
+index --> search: Menüpunkt "Suche"
+create --> id: Erfolg
+search --> id: Erfolg
+
+
+@enduml
