@@ -2,33 +2,52 @@ import { Form, Outlet, useActionData } from '@remix-run/react';
 import HorizontalBar from '~/component/bar';
 import barstyle from '~/component/bar.css';
 import type { ActionFunctionArgs } from '@remix-run/node';
-import { Button, Flex, Input, Select } from '@chakra-ui/react';
+import { Button, Flex, Input, Select,} from '@chakra-ui/react';
 import BookTable from '~/component/book.table';
+import axios from 'axios';
+import https from 'https';
+// import fs from 'fs';
+// cert: fs.readFileSync('app/certificate/certificate.crt')
 
-export async function fetchBuch(suchkriterien: string) {
-  // eslint-disable-next-line unicorn/prevent-abbreviations
-  const res = await fetch(`https://localhost:3000/rest/?${suchkriterien}`);
-  return await res.json();
-}
-
-export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-
-  //   delete empty values    //orginally [...formData.entries()])
-  for (const [key, value] of formData.entries()) {
-    if (value === '') formData.delete(key);
+export async function fetchBuch(suchkriterien: string){
+    const res = await axios(`https://localhost:3000/rest/?${suchkriterien}`, {
+      httpsAgent: new https.Agent({rejectUnauthorized: false}),
+      validateStatus :function(status){
+        return status < 500;
+      }
+    })
+    console.log(res.data)
+    return res.data;
+  }
+  
+  export async function action({
+    request,
+  }: ActionFunctionArgs)  {
+    const formData = await request.formData();
+  
+  //   delete empty values
+  [...formData.entries()].forEach(([key, value]) => {
+      if (value === '') formData.delete(key);
+  });
+    
+    const queryString = new URLSearchParams(formData as any).toString();
+    console.log('formData:', queryString);
+    const buchData =   await fetchBuch(queryString);
+     console.log('buecher:', buchData);
+    return buchData;
   }
 
-  const queryString = new URLSearchParams(formData as any).toString();
-  console.log('formData:', queryString);
-  const buchData = await fetchBuch(queryString);
-  console.log('buecher:', buchData?._embedded?.buecher);
-  return buchData;
-}
-
 export default function Search() {
-  const data = useActionData<typeof action>();
+  // const [flag, setFlag] =  useBoolean(true);
 
+  const data = useActionData<typeof action>();
+  let buecher = data;
+  if(data && data?._embedded){
+    buecher = data?._embedded?.buecher;
+  }else if(data && data.statusCode == 404){
+    buecher = [];
+  }
+    
   return (
     <div>
       <main>
@@ -58,11 +77,11 @@ export default function Search() {
                 <option>KINDLE</option>
               </Select>
             </Flex>
-            <Button mt="4" colorScheme="teal" type="submit">
-              Suche
+            <Button mt="4" colorScheme="teal" type="submit" >
+              Suche 
             </Button>
           </Form>
-          {<BookTable {...data?._embedded?.buecher}></BookTable>}
+          <BookTable buchArray={buecher} ></BookTable>    
         </Flex>
         <Outlet />
       </main>

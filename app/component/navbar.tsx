@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Flex, Button } from "@chakra-ui/react";
 import { StarIcon, SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { useNavigate, Link } from "@remix-run/react";
 import { useAuth } from './auth/AuthContext';
-//import LoginComponent from './auth/login';
+import  LogoutComponent  from './auth/logout';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -11,12 +11,6 @@ export default function Navbar() {
 
   const handleLoginClick = () => {
     navigate('/login');
-  };
-
-  const handleLogoutClick = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('roles');
-    logout();
   };
 
   return (
@@ -42,9 +36,7 @@ export default function Navbar() {
       <Flex flex="1" justifyContent="flex-end">
         {isLoggedIn ? (
           // Wenn eingeloggt, zeige den Logout-Button
-          <Button colorScheme='red' onClick={handleLogoutClick}>
-            Logout
-          </Button>
+          <LogoutComponent />
         ) : (
           // Wenn nicht eingeloggt, zeige den Login-Button
           <Button colorScheme='blue' onClick={handleLoginClick}>
