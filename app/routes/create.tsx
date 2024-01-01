@@ -7,8 +7,13 @@ import HorizontalBar from "~/component/bar";
 import barstyle from '~/component/bar.css';
 import https from 'node:https';
 import fs from 'node:fs/promises';
+import axios from "axios";
+// import { useAuth } from "~/component/auth/AuthContext";
 
 export default function Create() {
+
+  // const { token, roles } = useAuth();
+
   return (
     <div>
       <HorizontalBar title={'Anlegen'} subtitle={'Mehr als nur Wort: Dein Buch, unsere Reise'}></HorizontalBar>
@@ -20,10 +25,42 @@ export default function Create() {
   );
 }
 
-const serverUrl = 'https://localhost:3000';
+export async function postBuch(objektDaten, tokenDatei, roles) {
+
+  const serverUrl = 'https://localhost:3000';
+  
+  // Konfiguration des HTTPS-Agenten
+    const agent = new https.Agent({
+      // eslint-disable-next-line unicorn/no-await-expression-member
+      ca: (await fs.readFile('app/certificate/certificate.crt')).toString('utf8'),
+    });
+
+  try {
+    // eslint-disable-next-line sonarjs/prefer-immediate-return
+  const responses = await fetch(`${serverUrl}/rest`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-User-Role': roles,
+      'Authorization': `Bearer ${tokenDatei}`, 
+    },
+    body: JSON.stringify(objektDaten),
+    agent: agent,
+  });
+  return responses;
+  } catch (error) {
+    console.error('Fehler bei der Anfrage:', error);
+    throw error;
+  }
+}
 
 export async function action({ request } : ActionFunctionArgs ) {
   try {
+
+
+    const userRole = 'admin';
+    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiZTg3MGE3YjMtYTBhYS00ZTE0LThhNWQtZDRiYTE0NTJkYTc5IiwiaWF0IjoxNzA0MTQxMDYzLCJleHAiOjE3MDQxNDQ2NjMsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.KnkIKO2Y7yuA_0E_wgJ1OOQjnN7by0SKpgiM6CoCSr3ggrGB3Jq6UlfnJTMctW8VbZfu5dbGk4jFWmadyXwgkJwS5JejBNQHqFmlmTeK--zJfiNf_iVT0tG3A1AcPs1lU4-RH9ApVe0yQLads31rfPxAVvRV7HWnb4RyAqmc13hLrMCSXQNnbsrnVoGHeTbr3twitQ9TIniAcc4RG6A0PaoYCUieHFld5NYZzYCQSn6DeIcqmRB4k9wlUMDsugzZNc44SJaPZX9ZEV_3ZVIryXBr1CIcwAvs8KpEZMZUcOUQCsZ4kixjqnmzNBjjen6zxEI-6WrjnDPCEIDpaZaBtQ";
+
     const formData = await request.formData();
 
     const buchDaten = {
@@ -43,44 +80,28 @@ export async function action({ request } : ActionFunctionArgs ) {
       abbildungen: [{
         beschriftung: 'Abb. 1',
         contentType: 'img/png',
-
-        // beschriftung: formData.get('abbildungBeschriftung'),
-        // contentType: formData.get('abbildungContentType'),
       }],
     };
 
     console.log('Buchdaten vor dem Absenden:', buchDaten);
 
-    const userRole = 'admin';
-
-    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiMWMxYjY2YjMtNDI3My00OTFjLWE2N2UtYTcxYjNlYmE5MzM3IiwiaWF0IjoxNzA0MDEwMjAxLCJleHAiOjE3MDQwMTM4MDEsImlzcyI6Imh0dHBzOi8vaGthLmRlL0p1ZXJnZW5aaW1tZXJtYW5uIn0.SbTHlK0A37g1fX-0XEoLnSSRWPUotKP_k4q0_YIEkYgDmYMgnXaHhTbCvgzNHC5Bik-MirQNw5GwgGe1fm2rYbxGLrAv7xiAouOmBxlMwgvAazFL3kywb44FQ27fKTzeX6fcdgb2RyYKpIHg9QErM_vp9MP3n_K8x4e6zD-kYm5Em_saukmN2toRTjpnTbYwBkWMzsWkDcwhnelN_6CoF30bjpMs5JVLW1rPE-srn1LOFLY-t96OSZ9DcZX2WYkMLACDmEKXbpOLMihhFvz7ppu11x__gXTpFocXcrzgBpC4J4hROyVD3tzdu1GeSpQa0fpV18CLsLtrDju1T2n_yw";
-  
-    // Konfiguration des HTTPS-Agenten
-    const agent = new https.Agent({
-      // eslint-disable-next-line unicorn/no-await-expression-member
-      ca: (await fs.readFile('app/certificate/certificate.crt')).toString('utf8'),
-    });
-  
-     // Verwendung des HTTPS-Agenten im Fetch-Aufruf
-     const response = await fetch(`${serverUrl}/rest`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-User-Role': userRole,
-        'Authorization': `Bearer ${token}`, 
-      },
-      body: JSON.stringify(buchDaten),
-      agent: agent,
-    });
-  
-    // Wegen Testzwecken als Kommentar
-    // const responseBody = await response.json();
-    // console.log('Server response:', response.status, responseBody);
+    const response = await postBuch(buchDaten, token, userRole);
 
     const responseBody = await response.text();
     console.log('Server response:', response.status, responseBody);
 
     //Modal für Response SC201
+  //   const navigate = useNavigate();
+  //   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  //   const openSuccessModal = () => {
+  //     setIsSuccessModalOpen(true);
+  //   };
+
+  //   const closeSuccessModal = () => {
+  //     setIsSuccessModalOpen(false);
+  //     navigate('/search');
+  //   };
 
   //   if (response.status === 201) {
   //     // eslint-disable-next-line no-undef
@@ -99,6 +120,8 @@ export async function action({ request } : ActionFunctionArgs ) {
     return json({ error: 'Fehler beim Speichern des Buchs', details: error.message }, { status: 500 });
   }
 }
+
+
 
 export function links() {
   return [
