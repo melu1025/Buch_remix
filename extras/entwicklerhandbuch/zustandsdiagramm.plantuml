@@ -2,7 +2,23 @@
 
 [*] --> index
 index: session
+state "/search" as search {
 
+    state Suchergebnis <<choice>>
+
+    [*] --> Suchformular
+     Suchformular: suchkriterien
+        LadenRoot: true / false
+        state Suchergebnis <<choice>>
+
+
+        Suchformular --> LadenRoot: Button "Suchen"
+        LadenRoot --> Suchergebnis: false
+        Suchergebnis --> KeineBuecher: Keine Bücher
+        Suchergebnis --> BackendFehlerRoot: Backend nicht erreichbar
+        Suchergebnis --> GefundeneBuecher: >= 1 Buch
+
+}
 state "/login" as auth {
     Anmeldeformular: username
     Anmeldeformular: password
