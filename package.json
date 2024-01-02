@@ -8,8 +8,8 @@
     "dev": "set PORT=4200 && remix dev --manual",
     "start": "remix-serve ./build/index.js --ssl --ssl-key=app/certificate/key.pem --ssl-cert=app/certificate/certificate.crt",
     "typecheck": "tsc",
-    "prettier": "prettier --cache --write \"src/**/*.ts\" \"__tests__/**/*.ts\"",
-    "prettier:check": "prettier --cache --check \"src/**/*.ts\" \"__tests__/**/*.ts\""
+    "prettier": "prettier --cache --write \"app/**/*.tsx\" ",
+    "prettier:check": "prettier --cache --check \"app/**/*.tsx\" "
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -18,7 +18,7 @@
     "@emotion/server": "11.11.0",
     "@emotion/styled": "11.11.0",
     "@remix-run/css-bundle": "^2.3.1",
-    "@remix-run/node": "^2.3.1",
+    "@remix-run/node": "2.4.1",
     "@remix-run/react": "^2.3.1",
     "@remix-run/serve": "^2.3.1",
     "axios": "1.6.3",

@@ -1,29 +1,30 @@
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
-import type { MetaFunction } from '@remix-run/node'
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import type { MetaFunction } from '@remix-run/node';
 import { AuthProvider } from './component/auth/AuthContext';
-import { Links,
+import {
+  Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
+} from '@remix-run/react';
 import Navbar from './component/navbar';
 import theme from './theme.config';
 
-
 export const meta: MetaFunction = () => {
-    return [
-      { title: "Very cool app | Remix" },
-      {charset:"utf-8"},
-      {viewport: "width=device-width,initial-scale=1"},
-    ];
-  };
+  return [
+    { title: 'Very cool app | Remix' },
+    { charset: 'utf8' },
+    { viewport: 'width=device-width,initial-scale=1' },
+  ];
+};
 
 function Document({
   children,
-  title = "App title",
+  title = 'App title',
 }: {
+  // eslint-disable-next-line no-undef
   children: React.ReactNode;
   title?: string;
 }) {
@@ -35,7 +36,7 @@ function Document({
         <Links />
       </head>
       <body>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         {children}
         <ScrollRestoration />
         <Scripts />
