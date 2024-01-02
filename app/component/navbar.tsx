@@ -27,12 +27,14 @@ export default function Navbar() {
           Suche
         </Flex>
       </Link>
-      <Link to="/create">
-        <Flex alignItems="center" fontSize="lg">
-          <AddIcon marginRight="2" />
-          Anlegen
-        </Flex>
-      </Link>
+      {isLoggedIn && (
+        <Link to="/create">
+          <Flex alignItems="center" fontSize="lg">
+            <AddIcon marginRight="2" />
+            Anlegen
+          </Flex>
+        </Link>
+      )}
       <Flex flex="1" justifyContent="flex-end">
         {isLoggedIn ? (
           // Wenn eingeloggt, zeige den Logout-Button
