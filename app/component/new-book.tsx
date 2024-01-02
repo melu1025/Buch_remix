@@ -4,6 +4,7 @@ import { Button, Input, Checkbox, Flex, Text, Select } from '@chakra-ui/react';
 import './new-book.css';
 // import PopUp from '~/component/pop-up';
 import { Form } from '@remix-run/react';
+import Cookies from 'js-cookie';
 
 interface StarRatingProperties {
     value: number;
@@ -42,6 +43,12 @@ const StarRating: FC<StarRatingProperties> = ({ value, onChange }) => {
 };
 
 export default function NewBook() {
+
+    const token = Cookies.get('token');
+    const roles = Cookies.get('roles');
+
+    console.log(token);
+    console.log(roles);
 
     const [isbn, changeIsbn] = useState('');
     const [titel, changeTitel] = useState('');	
@@ -273,6 +280,9 @@ export default function NewBook() {
                       <label htmlFor="lieferbar">Lieferbar</label>
                   </div>
               </div>
+
+              <input type="hidden" name="token" value={token} />
+              <input type="hidden" name="roles" value={roles} />
 
               <div className="form-actions">
                 <Button type="submit" colorScheme="teal" 
