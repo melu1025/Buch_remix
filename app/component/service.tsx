@@ -13,6 +13,9 @@ export async function fetchBuch(suchkriterien: string) {
       },
     })
     .then(function (response) {
+      if (response.status == 404) {
+        return response.status;
+      }
       return response.data;
     })
     .catch(function (error) {
