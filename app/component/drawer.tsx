@@ -35,42 +35,43 @@ export default function DrawerDetail({ buch }: { buch: BuchTyp | undefined }) {
             </h1>
           </DrawerHeader>
           <DrawerBody>
-            <p>
+            <div>
               <b>ISBN:</b>
-              <div>{buch?.isbn}</div>
-            </p>
-            <p>
+              <h2>{buch?.isbn}</h2>
+            </div>
+            <div>
               <b>Rating:</b>
-              <div>{buch?.rating}</div>
-            </p>
-            <p>
+              <h2>{buch?.rating}</h2>
+            </div>
+            <div>
               <b>Art:</b>
-              <div>{buch?.art}</div>
-            </p>
-            <p>
+              <h2>{buch?.art}</h2>
+            </div>
+            <div>
               <b>Preis:</b>
-              <div>{buch?.rabatt}</div>
-            </p>
-            <p>
+              <h2>{buch?.preis}$</h2>
+            </div>
+            <div>
               <b>rabatt:</b>
-              <div>{buch?.rabatt}</div>
-            </p>
-            <p>
+              <h2>{buch?.rabatt}</h2>
+            </div>
+            <div>
               <b>Lieferbar:</b>
-              <div>{buch?.lieferbar ? 'Ja' : 'Nein'}</div>
-            </p>
-            <p>
+              <h2>{buch?.lieferbar ? 'Ja' : 'Nein'}</h2>
+            </div>
+            <div>
               <b>Datum:</b>
-              <div>{buch?.datum}</div>
-            </p>
-            <p>
+              <h2>{buch?.datum}</h2>
+            </div>
+            <div>
               <b>Homepage:</b>
-              <div>{buch?.homepage}</div>
-            </p>
-            <p>
+              <h2>{buch?.homepage}</h2>
+            </div>
+            <div>
               <b>Schlagwoerter:</b>
-              <div>{buch?.schlagwoerter}</div>
-            </p>
+              <h2>{buch?.schlagwoerter[0]}</h2>
+              <h2>{buch?.schlagwoerter[1]}</h2>
+            </div>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
