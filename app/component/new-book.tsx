@@ -47,9 +47,6 @@ export default function NewBook() {
     const token = Cookies.get('token');
     const roles = Cookies.get('roles');
 
-    console.log(token);
-    console.log(roles);
-
     const [isbn, changeIsbn] = useState('');
     const [titel, changeTitel] = useState('');	
     const [untertitel, changeUntertitel] = useState('');
@@ -59,7 +56,7 @@ export default function NewBook() {
     const [datum, changeDatum] = useState('');	
     const [selectedRating, setSelectedRating] = useState(0);
     const [homepage, changeHomepage] = useState('');
-    const [schlagwort, setSchlagwort] = useState('');
+    const [schlagwoerter, changeSchlagwoerter] = useState<string[]>([]);
     const [lieferbar, changeLieferbar] = useState(true);
     const [isInvalidIsbnPopupOpen, setInvalidIsbnPopupOpen] = useState(false);
     const [isInvalidPreisPopupOpen, setInvalidPreisPopupOpen] = useState(false);
@@ -95,25 +92,27 @@ export default function NewBook() {
     const handlePreisChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const inputPreis = event.target.value;
         const preis = Number.parseFloat(inputPreis);
+        changePreis(preis);
 
         if (/^\d+(\.\d{1,2})?$/.test(inputPreis) && preis > 0) {
-            // Bedingungen für den Preis sind erfüllt
-            changePreis(preis);
+            setInvalidPreisPopupOpen(false)
         } else {
-            // Bedingungen für den Preis sind nicht erfüllt, Popup-Fenster öffnen
             setInvalidPreisPopupOpen(true);
         }
     };
     const handleRabattChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const inputRabatt = event.target.value;
         const rabatt = Number.parseFloat(inputRabatt);
-
-        if (/^(0(\.\d{1,2})?|1(\.0{1,2})?)$/.test(inputRabatt) && rabatt >= 0 && rabatt <= 1) {
         changeRabatt(rabatt);
+
+        if (/^\d+(\.\d{1,2})?$/.test(inputRabatt)) {
+            if ( rabatt >= 0 && rabatt <= 1) {
+              setInvalidRabattPopupOpen(false);
+            } else {
+              setInvalidRabattPopupOpen(true);
+            }
         }
-        else {
-            setInvalidRabattPopupOpen(true);
-        }
+        else {setInvalidRabattPopupOpen(true);}
     };
     const handleDatumChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const datum = event.target.value;
@@ -122,32 +121,19 @@ export default function NewBook() {
             const isDatumConform = /^\d{4}-\d{2}-\d{2}$/.test(datum);
             if (isDatumConform) {
                 console.log('Datum ist richtig eingegeben worden');
+                setInvalidDatumPopupOpen(false);
             } else {
-                // Ungültiges Datum, Popup-Fenster öffnen
                 setInvalidDatumPopupOpen(true);
             }
-        } else {
-            // Datum ist nicht vollständig, Popup-Fenster schließen
-            setInvalidDatumPopupOpen(false);
+        } else if (datum.length <= 10){
+            setInvalidDatumPopupOpen(true);
+        } else if (datum.length >= 10){
+            setInvalidDatumPopupOpen(true);
         }
     };
     const handleRatingChange = (value: number) => {
         const rating = value;
         setSelectedRating(rating);
-        if(Number.isNaN(rating)) {
-            alert('Es handelt sich um keine Zahl');
-        }
-        else{
-            if(rating>5) {
-                setSelectedRating(5);
-            }
-            else{
-                setSelectedRating(rating);
-            }
-            if(rating<0) {
-                setSelectedRating(0);
-            }
-        }
     };
     const handleHomepageChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const homepage = event.target.value;
@@ -162,8 +148,11 @@ export default function NewBook() {
             setInvalidHomepagePopupOpen(true);
         }
     };
-    const handleSchlagwortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSchlagwort(event.target.value);
+    const handleSchlagwoerterChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+        const schlagwoerterValue = event.target.value;
+        // eslint-disable-next-line unicorn/better-regex
+        const schlagwoerterArray = schlagwoerterValue.split(/[,\s]+/).filter(Boolean);
+        changeSchlagwoerter(schlagwoerterArray);
     };
     const handleLieferbarChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const lieferbar = event.target.checked;
@@ -198,7 +187,7 @@ export default function NewBook() {
            {isInvalidPreisPopupOpen && (
            // eslint-disable-next-line sonarjs/no-duplicate-string
            <div className="popup" style={{ border: '2px solid red', padding: '10px' }}>
-             <p>Ungültiger Preis-Wert! Der Wert muss größer als 0 und maximal 2 Nachkommastellen haben.</p>
+             <p>Ungültiger Preis-Wert! Der Wert muss größer als 0 sein und darf maximal 2 Nachkommastellen haben.</p>
              <Button onClick={closeInvalidPreisPopup}>Schließen</Button>
            </div>
            )}
@@ -250,7 +239,7 @@ export default function NewBook() {
 
               <div className="form-section">
                   <label htmlFor="rabatt"></label>
-                  <Input type="number" id="rabatt" name="rabatt" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} required />
+                  <Input type="number" id="rabatt" name="rabatt" step="0.01" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} required />
               </div>
 
               <div className="form-section rating-section">
@@ -270,8 +259,8 @@ export default function NewBook() {
               </div>
 
               <div className="form-section">
-                  <label htmlFor="schlagwort"></label>
-                  <Input type="text" id="schlagwort" name="schlagwort" placeholder="Schlagwort" value={schlagwort} onChange={handleSchlagwortChange} />
+                  <label htmlFor="schlagwoerter"></label>
+                  <Input type="text" id="schlagwoerter" name="schlagwoerter" placeholder="Schlagwörter" value={Array.isArray(schlagwoerter) ? schlagwoerter.join(', ') : ''} onChange={handleSchlagwoerterChange}  />
               </div>
 
               <div className="form-section">
