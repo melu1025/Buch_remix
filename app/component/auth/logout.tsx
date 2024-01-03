@@ -13,15 +13,8 @@ export default function LogoutComponent() {
   const onClose = () => setIsOpen(false);
 
   const handleLogout = () => {
-    // Token und Rolle aus dem LocalStorage entfernen
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-
-    // Cookie mit dem Namen 'token' entfernen
     Cookies.remove('token');
-    Cookies.remove('roles');
     onOpen();
-    console.log('Erfolgreich ausgeloggt:');
   };
 
   const handleConfirmLogout = () => {

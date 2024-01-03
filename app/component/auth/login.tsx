@@ -4,46 +4,43 @@ import { Flex, Box, Input, Button, Text, Modal, ModalOverlay, ModalContent, Moda
 import axios from 'axios';
 import { useAuth } from './AuthContext';
 import Cookies from 'js-cookie';
-//import https from 'https';
 
 export default function LoginComponent() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState('');
 
   const handleLogin = async () => {
     try {
       const response = await axios.post(`https://localhost:3000/auth/login`, {
-        username: username,
-        password: password,
-        //httpsAgent: new https.Agent({rejectUnauthorized: false}),
+        username,
+        password,
       });
 
       if (response.status === 200) {
         const { token, roles } = response.data;
         login({ token, roles });
 
-        localStorage.setItem('token', token);
-        localStorage.setItem('roles', JSON.stringify(roles));
-
         Cookies.set('token', token, { expires: 1 / 24 });
-        Cookies.set('roles', JSON.stringify(roles));
 
         console.log('Erfolgreich eingeloggt:', response.data);
         onOpen();
       } else {
         console.error('Fehler beim Einloggen:', response.statusText);
-        setError(`Falscher Benutzername oder Passwort: ${response.data.message || 'Unbekannter Fehler'}`);
+        setError(`Fehler beim einloggen: ${response.data.message}`);
         setUsername('');
         setPassword('');
       }
     } catch (error: any) {
       console.error('Fehler:', error);
-      setError(`Falscher Benutzername oder Passwort: ${error.response?.data?.message || 'Unbekannter Fehler'}`);
+      setError(`${
+        error.response?.data?.message 
+          ? `Falscher Benutzername oder Passwort: ${error.response.data.message}`
+          : 'Server nicht erreichbar'
+      }`);
       setUsername('');
       setPassword('');
     }
