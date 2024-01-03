@@ -56,7 +56,7 @@ export default function LoginComponent() {
   };
 
   return (
-    <Flex direction="column" align="center" justify="center" height="100vh">
+    <Flex direction="column" align="center" justify="center" height="30vh">
       <Box>
         <label>
           Username:
