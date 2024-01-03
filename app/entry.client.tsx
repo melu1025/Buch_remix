@@ -5,7 +5,7 @@ import { CacheProvider } from '@emotion/react';
 import { RemixBrowser } from '@remix-run/react';
 
 import { ClientStyleContext } from './context';
-import createEmotionCache, { defaultCache } from './createEmotionCache';
+import createEmotionCache, { defaultCache } from './create.emotion.cache';
 
 interface ClientCacheProviderProperties {
   children: React.ReactNode;
