@@ -5,6 +5,7 @@ import './new-book.css';
 // import PopUp from '~/component/pop-up';
 import { Form } from '@remix-run/react';
 import Cookies from 'js-cookie';
+import { isbn } from '@form-validation/validator-isbn';
 
 interface StarRatingProperties {
     value: number;
@@ -22,7 +23,7 @@ const StarRating: FC<StarRatingProperties> = ({ value, onChange }) => {
     return (
       <Flex>
           <Text fontSize="xl" mr={2}>
-              Bewertung:
+              Bewertung*:
           </Text>
           {[1, 2, 3, 4, 5].map((rating) => (
             <Text
@@ -47,7 +48,7 @@ export default function NewBook() {
     const token = Cookies.get('token');
     const roles = Cookies.get('roles');
 
-    const [isbn, changeIsbn] = useState('');
+    const [isbn1, changeIsbn] = useState('');
     const [titel, changeTitel] = useState('');	
     const [untertitel, changeUntertitel] = useState('');
     const [buchArt, changeBuchArt] = useState('');
@@ -65,17 +66,22 @@ export default function NewBook() {
     const [isInvalidHomepagePopupOpen, setInvalidHomepagePopupOpen] = useState(false);
 
     const handleIsbnChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        const isbn = event.target.value;
-        changeIsbn(isbn);
+        const isbnWert = event.target.value;
+        changeIsbn(isbnWert);
     
-        const isIsbnConform = /^(978|979)-\d{1,5}-\d{1,7}-\d{1,6}-\d$/.test(isbn);
+        const isIsbnConform = /^(978|979)-\d{1,5}-\d{1,7}-\d{1,6}-\d$/.test(isbnWert);
         if (isIsbnConform) {
-            // ISBN ist korrekt, Popup-Fenster schließen (falls es offen ist)
-            setInvalidIsbnPopupOpen(false);
+            const result = isbn().validate({
+                value: isbnWert
+            });
+            if (result.valid) {
+                // ISBN ist gültig, Popup-Fenster schließen (falls es offen ist)
+                setInvalidIsbnPopupOpen(false);
         } else {
             // Ungültige ISBN, Popup-Fenster öffnen
             setInvalidIsbnPopupOpen(true);
         }
+    }
     };
     const handleTitelChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const titel = event.target.value;
@@ -211,22 +217,22 @@ export default function NewBook() {
            )}
               <div className="form-section">
                   <label htmlFor="isbn" className="blue-text"></label>
-                  <Input type="text" id="isbn" name="isbn" placeholder="ISBN" value={isbn} onChange={handleIsbnChange} className="blue-input-border" required />
+                  <Input type="text" id="isbn" name="isbn" placeholder="ISBN*" value={isbn1} onChange={handleIsbnChange} className="blue-input-border" required />
               </div>
 
               <div className="form-section">
                   <label htmlFor="titel"></label>
-                  <Input type="text" id="titel" name="titel" placeholder="Titel" value={titel} onChange={handleTitelChange} required />
+                  <Input type="text" id="titel" name="titel" placeholder="Titel*" value={titel} onChange={handleTitelChange} required />
               </div>
 
               <div className="form-section">
                   <label htmlFor="untertitel"></label>
-                  <Input type="text" id="untertitel" name="untertitel" placeholder="Untertitel" value={untertitel} onChange={handleUntertitelChange} required />
+                  <Input type="text" id="untertitel" name="untertitel" placeholder="Untertitel" value={untertitel} onChange={handleUntertitelChange} />
               </div>
 
               <div className="form-section">
                 <label htmlFor="buchArt"></label>
-                <Select  id="buchArt" name="buchArt" placeholder="Art des Buches" value={buchArt} onChange={handleBuchArtChange} required>
+                <Select  id="buchArt" name="buchArt" placeholder="Art des Buches" value={buchArt} onChange={handleBuchArtChange}>
                   <option value="KINDLE">KINDLE</option>
                   <option value="DRUCKAUSGABE">DRUCKAUSGABE</option>
                 </Select>
@@ -234,17 +240,17 @@ export default function NewBook() {
 
               <div className="form-section">
                   <label htmlFor="preis"></label>
-                  <Input type="number" id="preis" name="preis" step="0.01" placeholder="Preis" value={preis} onChange={handlePreisChange} required />
+                  <Input type="number" id="preis" name="preis" step="0.01" placeholder="Preis*" value={preis} onChange={handlePreisChange} required />
               </div>
 
               <div className="form-section">
                   <label htmlFor="rabatt"></label>
-                  <Input type="number" id="rabatt" name="rabatt" step="0.01" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} required />
+                  <Input type="number" id="rabatt" name="rabatt" step="0.01" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} />
               </div>
 
               <div className="form-section rating-section">
                   <label htmlFor="datum"></label>
-                  <Input type="text" id="datum" name="datum" placeholder="Datum, z.B. 2023-01-01" value={datum} onChange={handleDatumChange} pattern="\d{4}-\d{2}-\d{2}" title="Bitte geben Sie das Datum im Format JJJJ-MM-TT ein." required />
+                  <Input type="text" id="datum" name="datum" placeholder="Datum, z.B. 2023-01-01" value={datum} onChange={handleDatumChange} pattern="\d{4}-\d{2}-\d{2}" title="Bitte geben Sie das Datum im Format JJJJ-MM-TT ein." />
 
                   <Input type="hidden" name="rating" value={selectedRating} />
 
@@ -255,7 +261,7 @@ export default function NewBook() {
 
               <div className="form-section">
                   <label htmlFor="homepage"></label>
-                  <Input type="text" id="homepage" name="homepage" placeholder="Homepage" value={homepage} onChange={handleHomepageChange} required />
+                  <Input type="text" id="homepage" name="homepage" placeholder="Homepage" value={homepage} onChange={handleHomepageChange} />
               </div>
 
               <div className="form-section">
@@ -265,8 +271,8 @@ export default function NewBook() {
 
               <div className="form-section">
                   <div className="checkbox-group">
-                      <Checkbox id="lieferbar" name="lieferbar" isChecked={lieferbar} onChange={handleLieferbarChange} />
-                      <label htmlFor="lieferbar">Lieferbar</label>
+                      <Checkbox id="lieferbar" name="lieferbar" isChecked={lieferbar} onChange={handleLieferbarChange} required />
+                      <label htmlFor="lieferbar">Lieferbar*</label>
                   </div>
               </div>
 
