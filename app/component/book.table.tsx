@@ -23,17 +23,7 @@ export default function BookTable({
 }) {
   console.log(buchArray);
   if (!buchArray) return <div></div>;
-  if (typeof buchArray == 'number')
-    return (
-      <div>
-        <Alert status="error">
-          <AlertIcon />
-          <AlertTitle>Server Error </AlertTitle>
-          <AlertDescription>Buch Api ist nicht erreichbar</AlertDescription>
-        </Alert>
-      </div>
-    );
-  if (buchArray.length === 0) {
+  if (buchArray === 404) {
     return (
       <div>
         <Alert status="error">
@@ -46,6 +36,17 @@ export default function BookTable({
       </div>
     );
   }
+  if (typeof buchArray == 'number')
+    return (
+      <div>
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>Server Error </AlertTitle>
+          <AlertDescription>Buch Api ist nicht erreichbar</AlertDescription>
+        </Alert>
+      </div>
+    );
+
   return (
     <div>
       <TableContainer>
