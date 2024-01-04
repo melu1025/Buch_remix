@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from "@remix-run/react";
 import { Flex, Box, Input, Button, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@chakra-ui/react';
 import axios from 'axios';
-import { useAuth } from './AuthContext';
+import { useAuth } from './auth-context';
 import Cookies from 'js-cookie';
 
 export default function LoginComponent() {
