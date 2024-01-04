@@ -31,7 +31,7 @@ export async function action({ request }: ActionFunctionArgs) {
   });
   console.log(x.toString());
   formData.append('schlagwoerter', x.toString());
-   [...formData.entries()].forEach(([key, value]) => {
+  [...formData.entries()].forEach(([key, value]) => {
     if (value === '' || value === '0') formData.delete(key);
   });
   const v = new URLSearchParams(formData as any);

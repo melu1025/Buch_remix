@@ -6,7 +6,7 @@ interface StarRatingProperties {
   onChange: (rating: number) => void;
 }
 
- const StarsRating: FC<StarRatingProperties> = ({ value, onChange }) => {
+const StarsRating: FC<StarRatingProperties> = ({ value, onChange }) => {
   const handleClick = (rating: number) => {
     onChange(rating);
   };
