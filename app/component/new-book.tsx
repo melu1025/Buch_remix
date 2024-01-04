@@ -237,8 +237,6 @@ export default function NewBook() {
                 </Button>
               </div>
           </Form>
-
-          <PopUp isOpen={isSuccessModalOpen} onClose={closeSuccessModal} successMessage="Buch wurde erfolgreich neu angelegt" />
       </div>
     );
 }

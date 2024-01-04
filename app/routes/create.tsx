@@ -9,15 +9,6 @@ import https from 'node:https';
 import fs from 'node:fs';
 import axios from "axios";
 
-// import PopUp from "~/component/pop-up";
-// import { useState } from "react";
-
-// export const loader: LoaderFunction = async ({ request }) => {
-//   // Leere loader-Funktion, wenn keine Daten vorab geladen werden müssen
-//   // eslint-disable-next-line unicorn/no-null
-//   return null;
-// }
-
 export default function Create() {
   return (
     <div>
@@ -55,6 +46,7 @@ export async function postBuch(objektDaten :object, tokenDatei:string, ) {
       console.log(error.response.data);
       console.log(error.response.status);
       console.log(error.response.headers);
+      return error.response;
     } else if (error.request) {
       // The request was made but no response was received
       // error.request is an instance of XMLHttpRequest in the browser and an instance of
@@ -112,13 +104,17 @@ export async function action({ request } : ActionFunctionArgs ) {
 
     const responseBody = response?.data;
     console.log('ResponseBdy:', responseBody);
-    // console.log('Server response:', response);
+    console.log('Server response:', response);
 
-    // Weiterleitung
-    
-    return redirect('/search');
+    console.log('Server Status response:', response?.status);
+
+    if ( response.status === 201){
+      return redirect('/success');
+    }
+    else if ( response.status === 422) {
+      return redirect('/error');
+    }
     } catch (error:any) {
-    // Fehlerbehandlung
     console.error('Fehler beim Speichern des Buchs:', error);
       
     return json({ error: 'Fehler beim Speichern des Buchs', details: error.message }, { status: 500 });
