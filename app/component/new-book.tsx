@@ -280,14 +280,14 @@ export default function NewBook() {
               <input type="hidden" name="roles" value={roles} />
 
               <div className="form-actions">
-                <Button type="submit" colorScheme="teal" 
+                <Button type="submit" colorScheme="teal"  
                 >
                   Anlegen
                 </Button>
               </div>
           </Form>
 
-          {/* <PopUp isOpen={isSuccessModalOpen} onClose={closeSuccessModal} successMessage="Buch wurde erfolgreich neu angelegt" /> */}
+          <PopUp isOpen={isSuccessModalOpen} onClose={closeSuccessModal} successMessage="Buch wurde erfolgreich neu angelegt" />
       </div>
     );
 }

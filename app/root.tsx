@@ -16,7 +16,7 @@ import { ServerStyleContext, ClientStyleContext } from './context';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'Very cool app | Remix' },
+    { title: 'Buchseite | SWE' },
     { charset: 'utf8' },
     { viewport: 'width=device-width,initial-scale=1' },
   ];

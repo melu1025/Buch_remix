@@ -28,7 +28,7 @@ export default function BookTable({
       <div>
         <Alert status="error">
           <AlertIcon />
-          <AlertTitle>Keine Bücher gefunden </AlertTitle>
+          <AlertTitle>Keine Bücher gefunden</AlertTitle>
           <AlertDescription>
             Zu Ihrer Suchanfrage wurden keine Buecher gefunden
           </AlertDescription>
@@ -41,7 +41,7 @@ export default function BookTable({
       <div>
         <Alert status="error">
           <AlertIcon />
-          <AlertTitle>Server Error </AlertTitle>
+          <AlertTitle>Server Error</AlertTitle>
           <AlertDescription>Buch Api ist nicht erreichbar</AlertDescription>
         </Alert>
       </div>

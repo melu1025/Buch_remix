@@ -8,14 +8,8 @@ export async function fetchBuch(suchkriterien: string) {
       httpsAgent: new https.Agent({
         ca: fs.readFileSync('app/certificate/certificate.crt'),
       }),
-      validateStatus: function (status) {
-        return true;
-      },
     })
     .then(function (response) {
-      if (response.status == 404) {
-        return response.status;
-      }
       return response.data;
     })
     .catch(function (error) {
@@ -25,12 +19,13 @@ export async function fetchBuch(suchkriterien: string) {
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
+        return error.response.status;
       } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        console.log(error.request);
-        return;
+        console.log('Server', error.request);
+        return 500;
       } else {
         // Something happened in setting up the request that triggered an Error
         console.log('Error', error.message);
