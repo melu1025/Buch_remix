@@ -1,8 +1,16 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/react";
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { useAuth } from './auth-context';
-import { useState } from "react";
-import { useNavigate } from "@remix-run/react";
+import { useState } from 'react';
+import { useNavigate } from '@remix-run/react';
 
 export default function LogoutComponent() {
   const { logout } = useAuth();
@@ -25,7 +33,7 @@ export default function LogoutComponent() {
 
   return (
     <>
-      <Button colorScheme='red' onClick={handleLogout}>
+      <Button colorScheme="red" onClick={handleLogout}>
         Logout
       </Button>
 

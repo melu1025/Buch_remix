@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
-import { useNavigate } from "@remix-run/react";
-import { Flex, Box, Input, Button, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@chakra-ui/react';
+import { useNavigate } from '@remix-run/react';
+import {
+  Flex,
+  Box,
+  Input,
+  Button,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from '@chakra-ui/react';
 import axios from 'axios';
 import { useAuth } from './auth-context';
 import Cookies from 'js-cookie';
@@ -36,11 +49,13 @@ export default function LoginComponent() {
       }
     } catch (error: any) {
       console.error('Fehler:', error);
-      setError(`${
-        error.response?.data?.message 
-          ? `Falscher Benutzername oder Passwort: ${error.response.data.message}`
-          : 'Server nicht erreichbar'
-      }`);
+      setError(
+        `${
+          error.response?.data?.message
+            ? `Falscher Benutzername oder Passwort: ${error.response.data.message}`
+            : 'Server nicht erreichbar'
+        }`,
+      );
       setUsername('');
       setPassword('');
     }
@@ -61,7 +76,7 @@ export default function LoginComponent() {
           <Input
             type="text"
             value={username}
-            onChange={(input) => setUsername(input.target.value)}
+            onChange={input => setUsername(input.target.value)}
           />
         </label>
       </Box>
@@ -72,7 +87,7 @@ export default function LoginComponent() {
           <Input
             type="password"
             value={password}
-            onChange={(input) => setPassword(input.target.value)}
+            onChange={input => setPassword(input.target.value)}
           />
         </label>
       </Box>
@@ -90,9 +105,9 @@ export default function LoginComponent() {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Erfolgreich angemeldet</ModalHeader>
-            <ModalBody>
-              <Text>Ihre Anmeldung war erfolgreich!</Text>
-            </ModalBody>
+          <ModalBody>
+            <Text>Ihre Anmeldung war erfolgreich!</Text>
+          </ModalBody>
           <ModalFooter>
             <Button colorScheme="teal" onClick={handleClose}>
               OK
