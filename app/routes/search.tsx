@@ -6,7 +6,7 @@ import HorizontalBar from '~/component/bar';
 import barstyle from '~/component/bar.css';
 import searchstyle from '~/component/search.css';
 import type { ActionFunctionArgs } from '@remix-run/node';
-import { Button, Flex, Input, Select, Checkbox } from '@chakra-ui/react';
+import { Button, Flex, Input, Select, Checkbox, Stack } from '@chakra-ui/react';
 import BookTable from '~/component/book.table';
 import { fetchBuch } from '~/service/book.service';
 import StarsRating from '~/component/stars';
@@ -53,11 +53,14 @@ export default function Search() {
           <Form method="post" action="/search">
             <Flex direction="row" align="center" justify="center" mb="4">
               <Input type="text" name="titel" placeholder="Titel" mr="2" />
-              <Input
-                type="text"
-                name="schlagwoerter"
-                placeholder="z.B. JAVASCRIPT"
-              />
+              <Stack spacing={[1, 5]} direction={['column', 'row']}>
+                <Checkbox name="javascript" value="true">
+                  JAVASCRIPT
+                </Checkbox>
+                <Checkbox name="typescript" value="true">
+                  TYPESCRIPT
+                </Checkbox>
+              </Stack>
             </Flex>
             <Flex direction="row" align="center" justify="center" mb="4">
               <Select name="art" placeholder="BuchArt" width="100%">

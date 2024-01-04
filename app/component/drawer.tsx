@@ -13,7 +13,7 @@ export default function DrawerDetail({ buch }: { buch: BuchTyp }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   console.log('Drawer:', buch);
-  
+
   if (buch?.schlagwoerter[0] === 'null')
     buch.schlagwoerter[0] = 'Keine Schlagwörter für dieses Buch vorhanden';
   const schlagwoerter = buch.schlagwoerter.join(', ');
