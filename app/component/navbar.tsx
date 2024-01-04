@@ -1,8 +1,7 @@
-import React from 'react';
 import { Flex, Button } from '@chakra-ui/react';
 import { StarIcon, SearchIcon, AddIcon } from '@chakra-ui/icons';
 import { useNavigate, Link } from '@remix-run/react';
-import { useAuth } from './auth/auth-context';
+import { useAuth } from './auth/auth.context';
 import LogoutComponent from './auth/logout';
 
 export default function Navbar() {

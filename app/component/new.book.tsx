@@ -2,14 +2,33 @@
 /* eslint-disable unicorn/no-zero-fractions */
 import React, { useState } from 'react';
 import { Button, Input, Checkbox, Select } from '@chakra-ui/react';
-import './new-book.css';
-import { PopupValidation } from './pop-up';
+import './new.book.css';
+import { PopupValidation } from './popup';
 import { Form } from '@remix-run/react';
 import Cookies from 'js-cookie';
 import { isbn } from '@form-validation/validator-isbn';
 import StarsRating from '~/component/stars';
 
 export default function NewBook() {
+
+    const resetForm = () => {
+        changeIsbn('');
+        changeTitel('');
+        changeUntertitel('');
+        changeBuchArt('');
+        changePreis(0.01);
+        changeRabatt(0.000);
+        changeDatum('');
+        setSelectedRating(0);
+        changeHomepage('');
+        setSchlagwoerter([]);
+        changeLieferbar(true);
+        setInvalidIsbnPopupOpen(false);
+        setInvalidPreisPopupOpen(false);
+        setInvalidRabattPopupOpen(false);
+        setInvalidDatumPopupOpen(false);
+        setInvalidHomepagePopupOpen(false);
+    };
 
     const [isbn1, changeIsbn] = useState('');
     const [titel, changeTitel] = useState('');	
@@ -234,8 +253,8 @@ export default function NewBook() {
               <input type="hidden" name="token" value={token} />
 
               <div className="form-actions">
-                <Button type="submit" colorScheme="teal" isDisabled={isPopUpValidationOpen}>
-                   Buch Anlegen
+                <Button type="submit" colorScheme="teal" isDisabled={isPopUpValidationOpen} onClick={resetForm}>
+                   Buch anlegen
                 </Button>
               </div>
           </Form>

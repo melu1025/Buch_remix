@@ -13,7 +13,7 @@ import {
   AlertTitle,
   AlertDescription,
 } from '@chakra-ui/react';
-import type BuchTyp from './book.interface';
+import type BuchTyp from '~/service/book.interface';
 import DrawerDetail from './drawer';
 
 export default function BookTable({

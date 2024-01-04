@@ -8,7 +8,7 @@ import {
   ModalFooter,
 } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import { useAuth } from './auth-context';
+import { useAuth } from './auth.context';
 import { useState } from 'react';
 import { useNavigate } from '@remix-run/react';
 

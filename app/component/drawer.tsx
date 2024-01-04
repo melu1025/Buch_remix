@@ -7,7 +7,7 @@ import {
   DrawerOverlay,
   IconButton,
 } from '@chakra-ui/react';
-import type BuchTyp from './book.interface';
+import type BuchTyp from '~/service/book.interface';
 import { ViewIcon } from '@chakra-ui/icons';
 export default function DrawerDetail({ buch }: { buch: BuchTyp }) {
   const { isOpen, onOpen, onClose } = useDisclosure();

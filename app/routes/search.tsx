@@ -4,11 +4,11 @@
 import { Form, Outlet, useActionData } from '@remix-run/react';
 import HorizontalBar from '~/component/bar';
 import barstyle from '~/component/bar.css';
-import searchstyle from '~/component/searchPage.css';
+import searchstyle from '~/component/search.css';
 import type { ActionFunctionArgs } from '@remix-run/node';
 import { Button, Flex, Input, Select, Checkbox } from '@chakra-ui/react';
 import BookTable from '~/component/book.table';
-import { fetchBuch } from '~/component/service';
+import { fetchBuch } from '~/service/book.service';
 import StarsRating from '~/component/stars';
 import { useState } from 'react';
 
