@@ -2,13 +2,13 @@ import type {ActionFunctionArgs} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import NewBook from "~/component/new-book"; 
 import newbook from "~/component/new-book.css";
-import {Outlet} from "@remix-run/react";
+import {Outlet } from "@remix-run/react";
 import HorizontalBar from "~/component/bar";
 import barstyle from '~/component/bar.css';
 import https from 'node:https';
 import fs from 'node:fs';
 import axios from "axios";
-import Cookies from "js-cookie";
+
 // import PopUp from "~/component/pop-up";
 // import { useState } from "react";
 
@@ -19,17 +19,9 @@ import Cookies from "js-cookie";
 // }
 
 export default function Create() {
-
-  // const { token, roles } = useAuth();
-  const token = Cookies.get('token');
-  const roles = Cookies.get('roles');
-
-  console.log(token);
-  console.log(roles);
-
   return (
     <div>
-      <HorizontalBar title={'Anlegen'} subtitle={'Mehr als nur Wort: Dein Buch, unsere Reise'}></HorizontalBar>
+      <HorizontalBar title={'Anlegen'} subtitle={'Mehr als nur Worte: Dein Buch, unsere Reise'}></HorizontalBar>
       <main>
           <NewBook />
           <Outlet />
@@ -81,8 +73,18 @@ export async function action({ request } : ActionFunctionArgs ) {
     const formData = await request.formData();
 
     const token = formData.get('token')?.toString() || '';
-    // eslint-disable-next-line array-func/prefer-array-from
-    // const uniqueSchlagwoerter = [...new Set(formData.getAll('schlagwoerter'))];
+
+    const schlagwoerterArray: string[] = [];
+    const hiddenSchlagwoerterList = formData.getAll('hiddenSchlagwoerter');
+
+    for (const schlagwoerterEntry of hiddenSchlagwoerterList) {
+      if (schlagwoerterEntry instanceof File) {
+        // Ausschluss, dass es sich um eine Datei handelt
+      } else {
+        const schlagwoerterValues = schlagwoerterEntry.split(',').map((value) => value.trim());
+        schlagwoerterArray.push(...schlagwoerterValues);
+      }
+    }
 
     const buchDaten = {
       isbn: formData.get('isbn'),
@@ -93,7 +95,7 @@ export async function action({ request } : ActionFunctionArgs ) {
       lieferbar: formData.get('lieferbar') === 'on', // Checkbox: true, wenn aktiviert, sonst false
       datum: formData.get('datum'),
       homepage: formData.get('homepage'),
-      schlagwoerter:formData.getAll('schlagwoerter') || [],
+      schlagwoerter: schlagwoerterArray,
       titel: {
         titel: formData.get('titel'),
         untertitel: formData.get('untertitel'),
@@ -110,9 +112,10 @@ export async function action({ request } : ActionFunctionArgs ) {
 
     const responseBody = response?.data;
     console.log('ResponseBdy:', responseBody);
-    console.log('Server response:', response);
+    // console.log('Server response:', response);
 
     // Weiterleitung
+    
     return redirect('/search');
     } catch (error:any) {
     // Fehlerbehandlung

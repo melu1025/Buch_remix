@@ -4,10 +4,11 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, Modal
 interface PopUpProperty {
   isOpen: boolean;
   onClose: () => void;
-  successMessage: string;
+  message: string;
 }
 
-const PopUp: React.FC<PopUpProperty> = ({ isOpen, onClose, successMessage }) => {
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+const PopUp: React.FC<PopUpProperty> = ({ isOpen, onClose, message }) => {
   
   useEffect(() => {
     // Logik für das PopUp
@@ -20,7 +21,7 @@ const PopUp: React.FC<PopUpProperty> = ({ isOpen, onClose, successMessage }) => 
         <ModalHeader>Erfolgreich angelegt</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <p>{successMessage}</p>
+          <p>{message}</p>
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" onClick={onClose}>
@@ -32,4 +33,10 @@ const PopUp: React.FC<PopUpProperty> = ({ isOpen, onClose, successMessage }) => 
   );
 };
 
-export default PopUp;
+export const PopupValidation: React.FC<PopUpProperty> = ({ isOpen, onClose, message }) => (
+  isOpen && (
+    <div className="popup" style={{ border: '2px solid red', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <p>{message}</p>
+    </div>
+  )
+);
