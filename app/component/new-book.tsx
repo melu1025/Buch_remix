@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/no-zero-fractions */
 import React, { useState } from 'react';
 import { Button, Input, Checkbox, Select } from '@chakra-ui/react';
 import './new-book.css';
@@ -13,8 +15,8 @@ export default function NewBook() {
     const [titel, changeTitel] = useState('');	
     const [untertitel, changeUntertitel] = useState('');
     const [buchArt, changeBuchArt] = useState('');
-    const [preis, changePreis] = useState(0);
-    const [rabatt, changeRabatt] = useState(0);
+    const [preis, changePreis] = useState(0.01);
+    const [rabatt, changeRabatt] = useState(0.000);
     const [datum, changeDatum] = useState('');	
     const [selectedRating, setSelectedRating] = useState(0);
     const [homepage, changeHomepage] = useState('');
@@ -73,7 +75,7 @@ export default function NewBook() {
         const rabatt = Number.parseFloat(inputRabatt);
         changeRabatt(rabatt);
 
-        if (/^\d+(\.\d{1,2})?$/.test(inputRabatt)) {
+        if (/^\d+(\.\d{1,3})?$/.test(inputRabatt)) {
             if ( rabatt >= 0 && rabatt <= 1) {
               setInvalidRabattPopupOpen(false);
             } else {
@@ -168,7 +170,7 @@ export default function NewBook() {
 
               <div className="form-section">
                 <label htmlFor="buchArt"></label>
-                <Select  id="buchArt" name="buchArt" placeholder="Art des Buches" value={buchArt} onChange={handleBuchArtChange}>
+                <Select  id="buchArt" name="buchArt" placeholder="Art des Buches" value={buchArt} onChange={handleBuchArtChange} required>
                   <option value="KINDLE">KINDLE</option>
                   <option value="DRUCKAUSGABE">DRUCKAUSGABE</option>
                 </Select>
@@ -182,13 +184,13 @@ export default function NewBook() {
 
               <div className="form-section">
                   <label htmlFor="rabatt"></label>
-                  <Input type="number" id="rabatt" name="rabatt" step="0.01" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} />
+                  <Input type="number" id="rabatt" name="rabatt" step="0.01" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} required/>
                   <PopupValidation isOpen={isInvalidRabattPopupOpen} onClose={closeInvalidRabattPopup} message="Ungültiger Rabatt-Wert! Der Wert muss größer/gleich als 0 und kleiner/gleich als 1 sein." />
       </div>
 
               <div className="form-section rating-section">
                   <label htmlFor="datum"></label>
-                  <Input type="text" id="datum" name="datum" placeholder="Datum, z.B. 2023-01-01" value={datum} onChange={handleDatumChange} pattern="\d{4}-\d{2}-\d{2}" title="Bitte geben Sie das Datum im Format JJJJ-MM-TT ein." />
+                  <Input type="text" id="datum" name="datum" placeholder="Datum, z.B. 2023-01-01" value={datum} onChange={handleDatumChange} pattern="\d{4}-\d{2}-\d{2}" title="Bitte geben Sie das Datum im Format JJJJ-MM-TT ein." required/>
                   <PopupValidation isOpen={isInvalidDatumPopupOpen} onClose={closeInvalidDatumPopup} message="Ungültiges Datumsformat! Bitte verwenden Sie das Format JJJJ-MM-TT." />
       
                   <Input type="hidden" name="rating" value={selectedRating} />
@@ -200,7 +202,7 @@ export default function NewBook() {
 
               <div className="form-section">
                   <label htmlFor="homepage"></label>
-                  <Input type="text" id="homepage" name="homepage" placeholder="Homepage" value={homepage} onChange={handleHomepageChange} />
+                  <Input type="text" id="homepage" name="homepage" placeholder="Homepage" value={homepage} onChange={handleHomepageChange} required />
                   <PopupValidation isOpen={isInvalidHomepagePopupOpen} onClose={closeInvalidHomepagePopup} message="Ungültige Homepage-Adresse! Bitte verwenden Sie das Format 'https://www.example.com'." />
              </div>
 
