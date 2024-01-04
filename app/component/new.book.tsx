@@ -28,8 +28,8 @@ export default function NewBook() {
   const [isInvalidDatumPopupOpen, setInvalidDatumPopupOpen] = useState(false);
   const [isInvalidHomepagePopupOpen, setInvalidHomepagePopupOpen] =
     useState(false);
-
-  const handleIsbnChange: React.ChangeEventHandler<
+    
+    const handleIsbnChange: React.ChangeEventHandler<
     HTMLInputElement
   > = event => {
     const isbnWert = event.target.value;
@@ -138,11 +138,16 @@ export default function NewBook() {
   const handleSchlagwoerterChange: React.ChangeEventHandler<
     HTMLInputElement
   > = event => {
-    const schlagwoerterValue = event.target.value;
-    const schlagwoerterArray = schlagwoerterValue
-      .split(/[\s,]+/)
-      .filter(Boolean);
-    setSchlagwoerter(schlagwoerterArray);
+    const schlagwort = event.target.value;
+    const isSchlagwortSelected = schlagwoerter.includes(schlagwort);
+    if (isSchlagwortSelected) {
+      const updatedSchlagwoerter = schlagwoerter.filter(
+        item => item !== schlagwort,
+      );
+      setSchlagwoerter(updatedSchlagwoerter);
+    } else {
+      setSchlagwoerter([...schlagwoerter, schlagwort]);
+    }
   };
   const handleLieferbarChange: React.ChangeEventHandler<
     HTMLInputElement
@@ -317,14 +322,25 @@ export default function NewBook() {
         </div>
 
         <div className="form-section">
-          <label htmlFor="schlagwoerter"></label>
-          <Input
-            type="text"
-            id="schlagwoerter"
-            name="schlagwoerter"
-            placeholder="Schlagwörter"
+          <label htmlFor="schlagwoerter">Schlagwörter</label>
+          <Checkbox
+            id="javascript"
+            name="javascript"
+            isChecked={schlagwoerter.includes('JAVASCRIPT')}
             onChange={handleSchlagwoerterChange}
-          />
+            value="JAVASCRIPT"
+          >
+            JAVASCRIPT
+          </Checkbox>
+          <Checkbox
+            id="typescript"
+            name="typescript"
+            isChecked={schlagwoerter.includes('TYPESCRIPT')}
+            onChange={handleSchlagwoerterChange}
+            value="TYPESCRIPT"
+          >
+            TYPESCRIPT
+          </Checkbox>
 
           <input
             type="hidden"
