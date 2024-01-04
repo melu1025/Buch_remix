@@ -1,52 +1,13 @@
-import type { FC} from 'react';
 import React, { useState } from 'react';
-import { Button, Input, Checkbox, Flex, Text, Select } from '@chakra-ui/react';
+import { Button, Input, Checkbox, Select } from '@chakra-ui/react';
 import './new-book.css';
-// import PopUp from '~/component/pop-up';
+import { PopupValidation } from './pop-up';
 import { Form } from '@remix-run/react';
 import Cookies from 'js-cookie';
 import { isbn } from '@form-validation/validator-isbn';
-
-interface StarRatingProperties {
-    value: number;
-    onChange: (rating: number) => void;
-}
-
-const StarRating: FC<StarRatingProperties> = ({ value, onChange }) => {
-    const [selectedRating, setSelectedRating] = useState(value);
-  
-    const handleClick = (rating: number) => {
-      setSelectedRating(rating);
-      onChange(rating);
-    };
-
-    return (
-      <Flex>
-          <Text fontSize="xl" mr={2}>
-              Bewertung*:
-          </Text>
-          {[1, 2, 3, 4, 5].map((rating) => (
-            <Text
-              key={rating}
-              fontSize="xl"
-              cursor="pointer"
-              onClick={() => handleClick(rating)}
-              color={selectedRating >= rating ? "yellow.500" : "gray.300"}
-              transition="color 0.2s"
-              display="inline-block"
-              mr={1}
-            >
-                ★
-            </Text>
-          ))}
-      </Flex>
-    );
-};
+import StarsRating from '~/component/stars';
 
 export default function NewBook() {
-
-    const token = Cookies.get('token');
-    const roles = Cookies.get('roles');
 
     const [isbn1, changeIsbn] = useState('');
     const [titel, changeTitel] = useState('');	
@@ -57,8 +18,9 @@ export default function NewBook() {
     const [datum, changeDatum] = useState('');	
     const [selectedRating, setSelectedRating] = useState(0);
     const [homepage, changeHomepage] = useState('');
-    const [schlagwoerter, changeSchlagwoerter] = useState<string[]>([]);
+    const [schlagwoerter, setSchlagwoerter] = useState<string[]>([]);
     const [lieferbar, changeLieferbar] = useState(true);
+    const token = Cookies.get('token');
     const [isInvalidIsbnPopupOpen, setInvalidIsbnPopupOpen] = useState(false);
     const [isInvalidPreisPopupOpen, setInvalidPreisPopupOpen] = useState(false);
     const [isInvalidRabattPopupOpen, setInvalidRabattPopupOpen] = useState(false);
@@ -75,13 +37,13 @@ export default function NewBook() {
                 value: isbnWert
             });
             if (result.valid) {
-                // ISBN ist gültig, Popup-Fenster schließen (falls es offen ist)
                 setInvalidIsbnPopupOpen(false);
+            } else {
+                setInvalidIsbnPopupOpen(true);
+            }
         } else {
-            // Ungültige ISBN, Popup-Fenster öffnen
             setInvalidIsbnPopupOpen(true);
         }
-    }
     };
     const handleTitelChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const titel = event.target.value;
@@ -147,19 +109,16 @@ export default function NewBook() {
     
         const isHomepageConform = /^https:\/\/\w+(\.\w+)+$/.test(homepage);
         if (isHomepageConform) {
-            // Homepage ist korrekt, Popup-Fenster schließen (falls es offen ist)
             setInvalidHomepagePopupOpen(false);
         } else {
-            // Ungültige Homepage, Popup-Fenster öffnen
             setInvalidHomepagePopupOpen(true);
         }
     };
     const handleSchlagwoerterChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const schlagwoerterValue = event.target.value;
-        // eslint-disable-next-line unicorn/better-regex
-        const schlagwoerterArray = schlagwoerterValue.split(/[,\s]+/).filter(Boolean);
-        changeSchlagwoerter(schlagwoerterArray);
-    };
+        const schlagwoerterArray = schlagwoerterValue.split(/[\s,]+/).filter(Boolean);
+        setSchlagwoerter(schlagwoerterArray);
+      };
     const handleLieferbarChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const lieferbar = event.target.checked;
         changeLieferbar(lieferbar);
@@ -180,44 +139,21 @@ export default function NewBook() {
         setInvalidHomepagePopupOpen(false);
     };
 
+    const isPopUpValidationOpen =
+  isInvalidIsbnPopupOpen ||
+  isInvalidPreisPopupOpen ||
+  isInvalidRabattPopupOpen ||
+  isInvalidDatumPopupOpen ||
+  isInvalidHomepagePopupOpen;
+
     return (
       <div className="container">
           <Form method="post" id="note-form" className="form" action="/create">
-           {isInvalidIsbnPopupOpen && (
-           // eslint-disable-next-line sonarjs/no-duplicate-string
-           <div className="popup" style={{ border: '2px solid red', padding: '10px' }}>
-             <p>Die eingegebene ISBN ist ungültig. Bitte überprüfen Sie die Eingabe.</p>
-           <Button onClick={closeInvalidIsbnPopup}>Schließen</Button>
-           </div>
-           )}
-           {isInvalidPreisPopupOpen && (
-           // eslint-disable-next-line sonarjs/no-duplicate-string
-           <div className="popup" style={{ border: '2px solid red', padding: '10px' }}>
-             <p>Ungültiger Preis-Wert! Der Wert muss größer als 0 sein und darf maximal 2 Nachkommastellen haben.</p>
-             <Button onClick={closeInvalidPreisPopup}>Schließen</Button>
-           </div>
-           )}
-           {isInvalidRabattPopupOpen && (
-           <div className="popup" style={{ border: '2px solid red', padding: '10px' }}>
-             <p>Ungültiger Rabatt-Wert! Der Wert muss größer/gleich als 0 und kleiner/gleich als 1 sein.</p>
-             <Button onClick={closeInvalidRabattPopup}>Schließen</Button>
-           </div>
-           )}
-           {isInvalidDatumPopupOpen && (
-           <div className="popup" style={{ border: '2px solid red', padding: '10px' }}>
-             <p>Ungültiges Datumsformat! Bitte verwenden Sie das Format JJJJ-MM-TT.</p>
-             <Button onClick={closeInvalidDatumPopup}>Schließen</Button>
-           </div>
-           )}
-           {isInvalidHomepagePopupOpen && (
-           <div className="popup" style={{ border: '2px solid red', padding: '10px' }}>
-             <p>Ungültige Homepage-Adresse! Bitte verwenden Sie das Format "https://www.example.com".</p>
-             <Button onClick={closeInvalidHomepagePopup}>Schließen</Button>
-           </div>
-           )}
+          
               <div className="form-section">
                   <label htmlFor="isbn" className="blue-text"></label>
-                  <Input type="text" id="isbn" name="isbn" placeholder="ISBN*" value={isbn1} onChange={handleIsbnChange} className="blue-input-border" required />
+                  <Input type="text" id="isbn" name="isbn" placeholder="ISBN*" value={isbn1} onChange={handleIsbnChange} required />
+                  <PopupValidation isOpen={isInvalidIsbnPopupOpen} onClose={closeInvalidIsbnPopup} message="Die eingegebene ISBN ist ungültig. Bitte überprüfen Sie die Eingabe." />
               </div>
 
               <div className="form-section">
@@ -241,34 +177,51 @@ export default function NewBook() {
               <div className="form-section">
                   <label htmlFor="preis"></label>
                   <Input type="number" id="preis" name="preis" step="0.01" placeholder="Preis*" value={preis} onChange={handlePreisChange} required />
-              </div>
+                  <PopupValidation isOpen={isInvalidPreisPopupOpen} onClose={closeInvalidPreisPopup} message="Ungültiger Preis-Wert! Der Wert muss größer als 0 sein und darf maximal 2 Nachkommastellen haben." />
+      </div>
 
               <div className="form-section">
                   <label htmlFor="rabatt"></label>
                   <Input type="number" id="rabatt" name="rabatt" step="0.01" placeholder="Rabatt" value={rabatt} onChange={handleRabattChange} />
-              </div>
+                  <PopupValidation isOpen={isInvalidRabattPopupOpen} onClose={closeInvalidRabattPopup} message="Ungültiger Rabatt-Wert! Der Wert muss größer/gleich als 0 und kleiner/gleich als 1 sein." />
+      </div>
 
               <div className="form-section rating-section">
                   <label htmlFor="datum"></label>
                   <Input type="text" id="datum" name="datum" placeholder="Datum, z.B. 2023-01-01" value={datum} onChange={handleDatumChange} pattern="\d{4}-\d{2}-\d{2}" title="Bitte geben Sie das Datum im Format JJJJ-MM-TT ein." />
-
+                  <PopupValidation isOpen={isInvalidDatumPopupOpen} onClose={closeInvalidDatumPopup} message="Ungültiges Datumsformat! Bitte verwenden Sie das Format JJJJ-MM-TT." />
+      
                   <Input type="hidden" name="rating" value={selectedRating} />
 
                   <label htmlFor="rating"></label>
                   <Input type="hidden" name="rating" value={selectedRating} />
-                  <StarRating value={selectedRating} onChange={handleRatingChange} />
+                  <StarsRating value={selectedRating} onChange={handleRatingChange} />
               </div>
 
               <div className="form-section">
                   <label htmlFor="homepage"></label>
                   <Input type="text" id="homepage" name="homepage" placeholder="Homepage" value={homepage} onChange={handleHomepageChange} />
-              </div>
+                  <PopupValidation isOpen={isInvalidHomepagePopupOpen} onClose={closeInvalidHomepagePopup} message="Ungültige Homepage-Adresse! Bitte verwenden Sie das Format 'https://www.example.com'." />
+             </div>
 
               <div className="form-section">
-                  <label htmlFor="schlagwoerter"></label>
-                  <Input type="text" id="schlagwoerter" name="schlagwoerter" placeholder="Schlagwörter" value={Array.isArray(schlagwoerter) ? schlagwoerter.join(', ') : ''} onChange={handleSchlagwoerterChange}  />
-              </div>
+        <label htmlFor="schlagwoerter"></label>
+        <Input
+          type="text"
+          id="schlagwoerter"
+          name="schlagwoerter"
+          placeholder="Schlagwörter"
+          onChange={handleSchlagwoerterChange}
+        />
 
+<input
+                        type="hidden"
+                        id="hiddenSchlagwoerter"
+                        name="hiddenSchlagwoerter"
+                        value={schlagwoerter.join(',')}
+                    />
+
+      </div>
               <div className="form-section">
                   <div className="checkbox-group">
                       <Checkbox id="lieferbar" name="lieferbar" isChecked={lieferbar} onChange={handleLieferbarChange} required />
@@ -277,12 +230,10 @@ export default function NewBook() {
               </div>
 
               <input type="hidden" name="token" value={token} />
-              <input type="hidden" name="roles" value={roles} />
 
               <div className="form-actions">
-                <Button type="submit" colorScheme="teal"  
-                >
-                  Anlegen
+                <Button type="submit" colorScheme="teal" isDisabled={isPopUpValidationOpen}>
+                   Buch Anlegen
                 </Button>
               </div>
           </Form>

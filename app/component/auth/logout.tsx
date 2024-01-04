@@ -1,6 +1,6 @@
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@chakra-ui/react";
 import Cookies from 'js-cookie';
-import { useAuth } from './AuthContext';
+import { useAuth } from './auth-context';
 import { useState } from "react";
 import { useNavigate } from "@remix-run/react";
 

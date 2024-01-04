@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import type { MetaFunction } from '@remix-run/node';
-import { AuthProvider } from './component/auth/AuthContext';
+import { AuthProvider } from './component/auth/auth-context';
 import {
   Links,
   LiveReload,
