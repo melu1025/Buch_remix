@@ -16,41 +16,43 @@ state "/login" as auth {
 }
 
 state "/create" as create {
+
+    state Anlegeergebnis <<choice>>
     Anlegeformular: form
-    state Anmeldeergebnis <<choice>>
-
     [*] --> Anlegeformular
-    Anlegeformular --> Anmeldeergebnis
-    Anmeldeergebnis --> AnlegeFehler: Fehlerhafte Daten
-    Anmeldeergebnis --> BackendFehlerCreate: Backend nicht erreichbar
-    Anmeldeergebnis --> [*]: Erfolg
-}
-state "/search" as search {
 
+
+    state Anlegeergebnis <<choice>>
+
+    Anlegeformular --> Anlegeergebnis
+    Anlegeergebnis --> AnlegeFehler :Fehlerhafte Daten
+    Anlegeergebnis --> BackendFehlerCreate: Backend nicht erreichbar
+    Anlegeergebnis --> [*]: Erfolg
+
+}
+
+state "/search" as search {
     state Suchergebnis <<choice>>
 
     [*] --> Suchformular
-     Suchformular: suchkriterien
-        LadenRoot: true / false
-        state Suchergebnis <<choice>>
+    Suchformular: suchkriterien
+    state Suchergebnis <<choice>>
 
+    Suchformular --> Suchergebnis: false
+    Suchergebnis --> KeineBuecher: Keine Bücher
+    Suchergebnis --> BackendFehlerSearch: Backend nicht erreichbar
+    Suchergebnis --> GefundeneBuecher: >= 1 Buch
+}
 
-        Suchformular --> LadenRoot: Button "Suchen"
-        LadenRoot --> Suchergebnis: false
-        Suchergebnis --> KeineBuecher: Keine Bücher
-        Suchergebnis --> BackendFehlerRoot: Backend nicht erreichbar
-        Suchergebnis --> GefundeneBuecher: >= 1 Buch
-
+state "/success" as success {
+    Erfolgsmeldung: Meldungstext
 }
 
 
 
 index --> auth: Button "Login"
-auth --> index : Button "Logout"
-index --> create: Menüpunkt "Anlegen"(authorisiert)
+auth --> index : Button "Logout"(authorisiert)
+index --> create: Menüpunkt "Anlegen" (authorisiert)
 index --> search: Menüpunkt "Suche"
-create --> search: erfolgreich angelegt
-
-
-
+create --> success : Erfolgreich angelegt
 @enduml

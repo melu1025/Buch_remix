@@ -13,11 +13,7 @@ export default function DrawerDetail({ buch }: { buch: BuchTyp }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   console.log('Drawer:', buch);
-
-  if (buch?.schlagwoerter[0] === 'null')
-    buch.schlagwoerter[0] = 'Keine Schlagwörter für dieses Buch vorhanden';
-  const schlagwoerter = buch.schlagwoerter.join(', ');
-
+ 
   return (
     <>
       <IconButton
@@ -74,7 +70,7 @@ export default function DrawerDetail({ buch }: { buch: BuchTyp }) {
             </div>
             <div>
               <b>Schlagwoerter:</b>
-              <h2>{schlagwoerter}</h2>
+              <h2>{buch.schlagwoerter}</h2>
             </div>
           </DrawerBody>
         </DrawerContent>
