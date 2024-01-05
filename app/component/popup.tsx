@@ -1,4 +1,5 @@
 import React from 'react';
+import './popup.css';
 
 interface PopUpProperty {
   isOpen: boolean;
@@ -6,10 +7,13 @@ interface PopUpProperty {
   message: string;
 }
 
-export const PopupValidation: React.FC<PopUpProperty> = ({ isOpen, onClose, message }) => (
+export const PopupValidation: React.FC<PopUpProperty> = ({
+  isOpen,
+  onClose,
+  message,
+}) =>
   isOpen && (
-    <div className="popup" style={{ border: '2px solid red', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div className="popup">
       <p>{message}</p>
     </div>
-  )
-);
+  );

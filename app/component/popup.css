@@ -1,0 +1,8 @@
+.popup {
+    border: 2px solid red;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }

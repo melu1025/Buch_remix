@@ -2,10 +2,13 @@ import HorizontalBar from '~/component/bar';
 import barstyle from '~/component/bar.css';
 import { Outlet } from 'react-router-dom';
 
-export default function  Success () {
+export default function Success() {
   return (
     <div>
-      <HorizontalBar title={'Großartig'} subtitle={'Du hast ein neues Buch erschaffen.'} />
+      <HorizontalBar
+        title={'Großartig'}
+        subtitle={'Du hast ein neues Buch erschaffen.'}
+      />
       <main>
         <Outlet />
       </main>
@@ -13,10 +16,6 @@ export default function  Success () {
   );
 }
 
-
-
 export function links() {
-    return [
-      { rel: 'stylesheet', href: barstyle}
-    ];
-  }
+  return [{ rel: 'stylesheet', href: barstyle }];
+}
