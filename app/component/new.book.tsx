@@ -236,14 +236,13 @@ export default function NewBook() {
         </div>
 
         <div className="form-section">
-          <label htmlFor="preis"></label>
+          <label htmlFor="preisValue"></label>
           <Input
             type="number"
-            id="preis"
-            name="preis"
+            id="preisValue"
+            name="preisValue"
             step="0.01"
             placeholder="Preis*"
-            value={preis}
             onChange={handlePreisChange}
             required
           />
@@ -252,6 +251,7 @@ export default function NewBook() {
             onClose={closeInvalidPreisPopup}
             message="Ungültiger Preis-Wert! Der Wert muss größer als 0 sein und darf maximal 2 Nachkommastellen haben."
           />
+          <input type="hidden" name="preis" value={preis} />
         </div>
 
         <div className="form-section">
@@ -261,14 +261,14 @@ export default function NewBook() {
             id="rabattValue"
             name="rabattValue"
             step="0.001"
-            placeholder="Rabatt"
+            placeholder="Rabatt in %"
             onChange={handleRabattChange}
             required
           />
           <PopupValidation
             isOpen={isInvalidRabattPopupOpen}
             onClose={closeInvalidRabattPopup}
-            message="Ungültiger Rabatt-Wert! Der Wert muss größer/gleich als 0 und kleiner/gleich als 1 sein."
+            message="Ungültiger Rabatt-Wert! Der Wert muss größer/gleich als 0 und kleiner/gleich als 100 sein."
           />
           <input type="hidden" name="rabatt" value={rabatt} />
         </div>
@@ -334,9 +334,14 @@ export default function NewBook() {
             type="text"
             id="homepage"
             name="homepage"
-            placeholder="Homepage"
+            placeholder="Homepage, zum Beispiel https://www.example.de"
             value={homepage}
             onChange={handleHomepageChange}
+            onFocus={() => {
+              if (!homepage.startsWith('https://')) {
+                changeHomepage('https://');
+              }
+            }}
             required
           />
           <PopupValidation
@@ -353,9 +358,8 @@ export default function NewBook() {
               name="lieferbar"
               isChecked={lieferbar}
               onChange={handleLieferbarChange}
-              required
             />
-            <label htmlFor="lieferbar">Lieferbar*</label>
+            <label htmlFor="lieferbar">Lieferbar</label>
           </div>
         </div>
 
