@@ -40,7 +40,7 @@ export default function Search() {
     <div>
       <HorizontalBar
         title="Suche"
-        subtitle="Stöbern Sie durch die Bücherwelt:Finde Sie Ihren nächsten literrarischen
+        subtitle="Stöbern Sie durch die Bücherwelt: Finde Sie Ihren nächsten literarischen
         Begleiter mit unserer leistungsstarken Suchfunktion"
       />
       <main>
@@ -63,7 +63,12 @@ export default function Search() {
               </Stack>
             </Flex>
             <Flex direction="row" align="center" justify="center" mb="4">
-              <Select name="art" placeholder="BuchArt" width="100%">
+              <Select
+                name="art"
+                placeholder="BuchArt"
+                width="220px"
+                marginRight={'30px'}
+              >
                 <option>DRUCKAUSGABE</option>
                 <option>KINDLE</option>
               </Select>

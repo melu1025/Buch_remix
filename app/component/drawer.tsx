@@ -13,7 +13,7 @@ export default function DrawerDetail({ buch }: { buch: BuchTyp }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   console.log('Drawer:', buch);
- 
+
   return (
     <>
       <IconButton

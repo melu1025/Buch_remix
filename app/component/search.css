@@ -7,11 +7,6 @@ form {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
 input
 {
     width: 100%;
@@ -19,10 +14,4 @@ input
     box-sizing: border-box;
     margin-top: 5px;
 }
-
-.checkbox-group {
-    display: flex;
-    gap: 10px;
-}
-
 
