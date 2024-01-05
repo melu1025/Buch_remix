@@ -6,11 +6,11 @@ import './new.book.css';
 import { PopupValidation } from './popup';
 import { Form } from '@remix-run/react';
 import Cookies from 'js-cookie';
-import { isbn } from '@form-validation/validator-isbn';
+import { isbn as isbnCheck } from '@form-validation/validator-isbn';
 import StarsRating from '~/component/stars';
 
 export default function NewBook() {
-  const [isbn1, changeIsbn] = useState('');
+  const [isbn, changeIsbn] = useState('');
   const [titel, changeTitel] = useState('');
   const [untertitel, changeUntertitel] = useState('');
   const [buchArt, changeBuchArt] = useState('');
@@ -28,8 +28,8 @@ export default function NewBook() {
   const [isInvalidDatumPopupOpen, setInvalidDatumPopupOpen] = useState(false);
   const [isInvalidHomepagePopupOpen, setInvalidHomepagePopupOpen] =
     useState(false);
-    
-    const handleIsbnChange: React.ChangeEventHandler<
+
+  const handleIsbnChange: React.ChangeEventHandler<
     HTMLInputElement
   > = event => {
     const isbnWert = event.target.value;
@@ -39,7 +39,7 @@ export default function NewBook() {
       isbnWert,
     );
     if (isIsbnConform) {
-      const result = isbn().validate({
+      const result = isbnCheck().validate({
         value: isbnWert,
       });
       if (result.valid) {
@@ -86,15 +86,11 @@ export default function NewBook() {
     HTMLInputElement
   > = event => {
     const inputRabatt = event.target.value;
-    const rabatt = Number.parseFloat(inputRabatt);
-    changeRabatt(rabatt);
-
-    if (/^\d+(\.\d{1,3})?$/.test(inputRabatt)) {
-      if (rabatt >= 0 && rabatt <= 1) {
-        setInvalidRabattPopupOpen(false);
-      } else {
-        setInvalidRabattPopupOpen(true);
-      }
+    const rabattValidation = Number.parseFloat(inputRabatt);
+    if (rabattValidation >= 0 && rabattValidation <= 100) {
+      setInvalidRabattPopupOpen(false);
+      const rabatt = rabattValidation / 100;
+      changeRabatt(rabatt);
     } else {
       setInvalidRabattPopupOpen(true);
     }
@@ -188,7 +184,7 @@ export default function NewBook() {
             id="isbn"
             name="isbn"
             placeholder="ISBN*"
-            value={isbn1}
+            value={isbn}
             onChange={handleIsbnChange}
             required
           />
@@ -259,14 +255,13 @@ export default function NewBook() {
         </div>
 
         <div className="form-section">
-          <label htmlFor="rabatt"></label>
+          <label htmlFor="rabattValue"></label>
           <Input
             type="number"
-            id="rabatt"
-            name="rabatt"
-            step="0.01"
+            id="rabattValue"
+            name="rabattValue"
+            step="0.001"
             placeholder="Rabatt"
-            value={rabatt}
             onChange={handleRabattChange}
             required
           />
@@ -275,6 +270,7 @@ export default function NewBook() {
             onClose={closeInvalidRabattPopup}
             message="Ungültiger Rabatt-Wert! Der Wert muss größer/gleich als 0 und kleiner/gleich als 1 sein."
           />
+          <input type="hidden" name="rabatt" value={rabatt} />
         </div>
 
         <div className="form-section rating-section">
@@ -304,24 +300,6 @@ export default function NewBook() {
         </div>
 
         <div className="form-section">
-          <label htmlFor="homepage"></label>
-          <Input
-            type="text"
-            id="homepage"
-            name="homepage"
-            placeholder="Homepage"
-            value={homepage}
-            onChange={handleHomepageChange}
-            required
-          />
-          <PopupValidation
-            isOpen={isInvalidHomepagePopupOpen}
-            onClose={closeInvalidHomepagePopup}
-            message="Ungültige Homepage-Adresse! Bitte verwenden Sie das Format 'https://www.example.com'."
-          />
-        </div>
-
-        <div className="form-section">
           <label htmlFor="schlagwoerter">Schlagwörter</label>
           <Checkbox
             id="javascript"
@@ -344,11 +322,30 @@ export default function NewBook() {
 
           <input
             type="hidden"
-            id="hiddenSchlagwoerter"
-            name="hiddenSchlagwoerter"
+            id="arraySchlagwoerter"
+            name="arraySchlagwoerter"
             value={schlagwoerter.join(',')}
           />
         </div>
+
+        <div className="form-section">
+          <label htmlFor="homepage"></label>
+          <Input
+            type="text"
+            id="homepage"
+            name="homepage"
+            placeholder="Homepage"
+            value={homepage}
+            onChange={handleHomepageChange}
+            required
+          />
+          <PopupValidation
+            isOpen={isInvalidHomepagePopupOpen}
+            onClose={closeInvalidHomepagePopup}
+            message="Ungültige Homepage-Adresse! Bitte verwenden Sie das Format 'https://www.example.com'."
+          />
+        </div>
+
         <div className="form-section">
           <div className="checkbox-group">
             <Checkbox

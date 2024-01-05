@@ -2,6 +2,7 @@ import type { ActionFunctionArgs } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import NewBook from '~/component/new.book';
 import newbook from '~/component/new.book.css';
+import popupStyle from '~/component//popup.css';
 import { Outlet, useActionData } from '@remix-run/react';
 import HorizontalBar from '~/component/bar';
 import barstyle from '~/component/bar.css';
@@ -33,7 +34,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const token = formData.get('token')?.toString() || '';
 
     const schlagwoerterArray: string[] = [];
-    const hiddenSchlagwoerterList = formData.getAll('hiddenSchlagwoerter');
+    const hiddenSchlagwoerterList = formData.getAll('arraySchlagwoerter');
 
     for (const schlagwoerterEntry of hiddenSchlagwoerterList) {
       if (schlagwoerterEntry instanceof File) {
@@ -104,5 +105,6 @@ export function links() {
   return [
     { rel: 'stylesheet', href: barstyle },
     { rel: 'stylesheet', href: newbook },
+    { rel: 'stylesheet', href: popupStyle },
   ];
 }
